@@ -1,0 +1,92 @@
+{
+  "config": {
+    "base_model": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "seed": 42,
+    "num_train_epochs": 20,
+    "warmup_steps": 6,
+    "lr": 0.0002,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "max_seq_len": 512,
+    "max_new_tokens": 96,
+    "gen": {
+      "do_sample": false
+    }
+  },
+  "versions": {
+    "transformers": "5.18.0",
+    "peft": "0.21.1",
+    "trl": "1.14.2",
+    "torch": "2.11.0+cu130"
+  },
+  "method": "LoRA（量子化なし）",
+  "before": {
+    "label": "before",
+    "n": 21,
+    "format_rate": 0.38095238095238093,
+    "content_rate": 0.09523809523809523,
+    "both_rate": 0.09523809523809523,
+    "seconds": 37.9
+  },
+  "after": {
+    "label": "after",
+    "n": 21,
+    "format_rate": 1.0,
+    "content_rate": 0.9047619047619048,
+    "both_rate": 0.9047619047619048,
+    "seconds": 39.3
+  },
+  "regressed": [],
+  "knowledge": [
+    {
+      "質問": "図書室の責任者の氏名は？",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"図書室の責任者は「図書室長」です。\"}",
+      "学習後の分類": "needs_review",
+      "学習後の出力": "{\"answer\": \"この FAQ には記載がありません。運営に確認が必要です。\", \"needs_review\": true}",
+      "FAQ_semantically_grounded": false
+    },
+    {
+      "質問": "予約のある本を延長する条件は？",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"貸出期間を 7 日間延長できます。\"}",
+      "学習後の分類": "needs_review",
+      "学習後の出力": "{\"answer\": \"この FAQ には記載がありません。運営に確認が必要です。\", \"needs_review\": true}",
+      "FAQ_semantically_grounded": false
+    },
+    {
+      "質問": "次の臨時休室日はいつですか",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"確認が必要\"}",
+      "学習後の分類": "needs_review",
+      "学習後の出力": "{\"answer\": \"この FAQ には記載がありません。運営に確認が必要です。\", \"needs_review\": true}",
+      "FAQ_semantically_grounded": false
+    },
+    {
+      "質問": "図書室の開室時間はいつですか",
+      "FAQ にある": false,
+      "学習前の分類": "format_error",
+      "学習前の出力": "{\"answer\": \"平日の 9:00〜20:00 です\"}",
+      "学習後の分類": "asserted",
+      "学習後の出力": "{\"answer\": \"開室時間は平日の 9:00〜20:00 です。\", \"needs_review\": false}",
+      "FAQ_semantically_grounded": true
+    }
+  ],
+  "executed_training_myself": false,
+  "training_executed_by": "Codex via Colab UI on user account",
+  "training_executed_in_this_run": true,
+  "training": {
+    "seconds": 193.564,
+    "global_step": 40,
+    "epoch": 20.0,
+    "train_loss": 0.4307072963565588,
+    "final_logged_loss": 0.015986670553684235
+  },
+  "topic": "架空の大学図書室FAQ",
+  "source_notebook_url": "https://colab.research.google.com/drive/1BGt29c2Q-bmmFebQuC8WAnCSdwhCreXP",
+  "annotation_note": "Original FAQ membership is an exact q in gold check. Added semantic annotation for the grounded control without changing raw outputs or scores."
+}

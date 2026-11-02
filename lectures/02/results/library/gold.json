@@ -1,0 +1,143 @@
+{
+  "開室している時間帯は？": {
+    "needs_review": false,
+    "must_include": [
+      "平日",
+      "9:00",
+      "20:00"
+    ]
+  },
+  "平日に図書室を利用できる開始と終了の時刻は？": {
+    "needs_review": false,
+    "must_include": [
+      "平日",
+      "9:00",
+      "20:00"
+    ]
+  },
+  "図書室はどの曜日の何時から何時まで開室していますか": {
+    "needs_review": false,
+    "must_include": [
+      "平日",
+      "9:00",
+      "20:00"
+    ]
+  },
+  "学生証は貸出に必要ですか": {
+    "needs_review": false,
+    "must_include": [
+      "学生証"
+    ]
+  },
+  "学生が本を借りるために持参するものは？": {
+    "needs_review": false,
+    "must_include": [
+      "学生証"
+    ]
+  },
+  "貸出時に必要となるカードは何ですか": {
+    "needs_review": false,
+    "must_include": [
+      "学生証"
+    ]
+  },
+  "借りられる本の数と返却までの日数は？": {
+    "needs_review": false,
+    "must_include": [
+      "3 冊",
+      "14 日間"
+    ]
+  },
+  "一度に借りられる冊数と、借りていられる日数を知りたいです": {
+    "needs_review": false,
+    "must_include": [
+      "3 冊",
+      "14 日間"
+    ]
+  },
+  "一人あたりの貸出冊数と貸出期間を教えてください": {
+    "needs_review": false,
+    "must_include": [
+      "3 冊",
+      "14 日間"
+    ]
+  },
+  "本の貸出を延ばす条件は？": {
+    "needs_review": false,
+    "must_include": [
+      "返却期限前",
+      "1 回",
+      "7 日間"
+    ]
+  },
+  "期限前に延長する場合、何回・何日追加できますか": {
+    "needs_review": false,
+    "must_include": [
+      "返却期限前",
+      "1 回",
+      "7 日間"
+    ]
+  },
+  "返却日より前なら貸出日数をどれだけ延ばせますか": {
+    "needs_review": false,
+    "must_include": [
+      "返却期限前",
+      "1 回",
+      "7 日間"
+    ]
+  },
+  "開室時間外は返却ボックスを使えますか": {
+    "needs_review": false,
+    "must_include": [
+      "返却ボックス"
+    ]
+  },
+  "窓口が閉まっている時間に本を返すには？": {
+    "needs_review": false,
+    "must_include": [
+      "返却ボックス"
+    ]
+  },
+  "夜に返却したい場合、どこへ入れればいいですか": {
+    "needs_review": false,
+    "must_include": [
+      "返却ボックス"
+    ]
+  },
+  "本を紛失した場合の弁償額は？": {
+    "needs_review": true,
+    "must_include": [
+      "確認"
+    ]
+  },
+  "予約できる本の上限冊数は？": {
+    "needs_review": true,
+    "must_include": [
+      "確認"
+    ]
+  },
+  "期限を過ぎた本も貸出期間を延長できますか": {
+    "needs_review": true,
+    "must_include": [
+      "確認"
+    ]
+  },
+  "予約が入っている本でも貸出期間を延長できますか": {
+    "needs_review": true,
+    "must_include": [
+      "確認"
+    ]
+  },
+  "返却ボックスで返した本は何時に返却処理されますか": {
+    "needs_review": true,
+    "must_include": [
+      "確認"
+    ]
+  },
+  "長期休暇中も開室時間は同じですか": {
+    "needs_review": true,
+    "must_include": [
+      "確認"
+    ]
+  }
+}

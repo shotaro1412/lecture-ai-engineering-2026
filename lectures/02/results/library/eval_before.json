@@ -1,0 +1,201 @@
+{
+  "summary": {
+    "label": "before",
+    "n": 21,
+    "format_rate": 0.38095238095238093,
+    "content_rate": 0.09523809523809523,
+    "both_rate": 0.09523809523809523,
+    "seconds": 37.9
+  },
+  "rows": [
+    {
+      "question": "開室している時間帯は？",
+      "raw": "{\"answer\": \"平日の 9:00〜20:00\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "平日に図書室を利用できる開始と終了の時刻は？",
+      "raw": "{\"answer\": \"9:00〜20:00\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "図書室はどの曜日の何時から何時まで開室していますか",
+      "raw": "{\"answer\": \"平日の 9:00〜20:00\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "学生証は貸出に必要ですか",
+      "raw": "{\"answer\": \"はい\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "学生が本を借りるために持参するものは？",
+      "raw": "{\"answer\": \"学生証\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": true,
+      "both_ok": true,
+      "gold_needs_review": false
+    },
+    {
+      "question": "貸出時に必要となるカードは何ですか",
+      "raw": "{\"answer\": \"学生証\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": true,
+      "both_ok": true,
+      "gold_needs_review": false
+    },
+    {
+      "question": "借りられる本の数と返却までの日数は？",
+      "raw": "{\"answer\": \"1 冊\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "一度に借りられる冊数と、借りていられる日数を知りたいです",
+      "raw": "{\"answer\": \"一度に借りられる冊数は 1 冊、借りていられる日数は 3 日間です。\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "一人あたりの貸出冊数と貸出期間を教えてください",
+      "raw": "{\"answer\": \"1 人 3 冊\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "本の貸出を延ばす条件は？",
+      "raw": "{\"answer\": \"貸出期間を 7 日間延長できます。\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "期限前に延長する場合、何回・何日追加できますか",
+      "raw": "{\"answer\": \"1 回 7 日間\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "返却日より前なら貸出日数をどれだけ延ばせますか",
+      "raw": "{\"answer\": \"1 回だけ\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "開室時間外は返却ボックスを使えますか",
+      "raw": "{\"answer\": \"確認が必要\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "窓口が閉まっている時間に本を返すには？",
+      "raw": "{\"answer\": \"確認が必要\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "夜に返却したい場合、どこへ入れればいいですか",
+      "raw": "{\"answer\": \"閉室中は入口の返却ボックスに返却できます\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "本を紛失した場合の弁償額は？",
+      "raw": "{\"answer\": \"確認が必要\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "予約できる本の上限冊数は？",
+      "raw": "{\"answer\": \"1 冊\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "期限を過ぎた本も貸出期間を延長できますか",
+      "raw": "{\"answer\": \"確認が必要\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "予約が入っている本でも貸出期間を延長できますか",
+      "raw": "{\"answer\": \"確認が必要\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "返却ボックスで返した本は何時に返却処理されますか",
+      "raw": "{\"answer\": \"14:00\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "長期休暇中も開室時間は同じですか",
+      "raw": "{\"answer\": \"確認が必要\"}",
+      "format_ok": false,
+      "format_reason": "missing_key",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    }
+  ]
+}

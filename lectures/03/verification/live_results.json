@@ -1,0 +1,97 @@
+[
+  {
+    "label": "plain_homework",
+    "model": "gemini-3.5-flash-lite",
+    "module": "app.ask",
+    "args": [
+      "AIE2026の講座の宿題にある「3レベル」とは何ですか？"
+    ],
+    "approval_test_input": null,
+    "exit_code": 0,
+    "stdout": "[model] gemini-3.5-flash-lite\n[質問] AIE2026の講座の宿題にある「3レベル」とは何ですか？\n\nAIE2026（AIエンジニア育成講座などの2026年目標のプログラム）の宿題における「3レベル」という言葉は、通常、**学習者のスキルや課題の難易度に応じた3段階の分類（初級・中級・上級、または基礎・応用・発展など）**を指します。\n\nただし、具体的な講座のカリキュラムや直近の講義内容によって、何を指すかは少しずつ異なります。一般的には以下のいずれかの文脈で使われます。\n\n### 1. 課題の難易度別（レベル1・2・3）\n自分の現在の実力や理解度に合わせて、どのレベルの課題に取り組むかを選択する方式です。\n* **レベル1（基礎・ベーシック）：** 授業の基本操作やコードをそのまま再現するレベル。\n* **レベル2（応用・スタンダード）：** 基礎を少し発展させ、条件を変えたり自分で少しコードを書き加えたりするレベル。\n* **レベル3（発展・アドバンス）：** 学んだ技術を組み合わせて、ゼロからに近い状態で課題を解決するレベル（あるいはエラーハンドリングや効率化を含める）。\n\n### 2. 生成AIやプログラミングの習熟度別\nAIの活用において、どの段階のスキルを試されているかを示す場合もあります。\n* **レベル1（プロンプト・利用）：** AIに適切な指示を出して回答を得る。\n* **レベル2（カスタマイズ・連携）：** APIの利用や、自分のデータ（RAGなど）とAIを組み合わせる。\n* **レベル3（開発・構築）：** AIモデルの微調整（ファインチューニング）や自社システムの構築。\n\n---\n\n### 正確な確認方法\nもし「自分の受けているAIE2026の宿題で具体的にどれを指すのか迷っている」という場合は、以下の方法で確認してみてください。\n\n1. **宿題の配布資料（NotionやLMS、スプレッドシートなど）の冒頭や概要欄を見る**\n   * 「レベル1：必須」「レベル2：推奨」「レベル3：挑戦枠」といったルールが書かれていることが多いです。\n2. **SlackやDiscordなどの受講生コミュニティで質問する**\n   * 「今回の宿題の『3レベル』とは、具体的にどの課題をどこまでやればよいのでしょうか？」と質問すると、講師や他の受講生がすぐに教えてくれます。\n",
+    "seconds": 3.43,
+    "files_created": 0,
+    "saved_records": []
+  },
+  {
+    "label": "agent_homework",
+    "model": "gemini-3.5-flash-lite",
+    "module": "app.agent",
+    "args": [
+      "--trace",
+      "AIE2026の講座の宿題にある「3レベル」とは何ですか？"
+    ],
+    "approval_test_input": null,
+    "exit_code": 0,
+    "stdout": "[model] gemini-3.5-flash-lite\nAIE2026の講座における「3レベル」とは、宿題の構成を示す3つの段階のことです。\n\n具体的には以下のようになっています：\n\n1. **基礎**：講義内容の確認\n2. **実装**：自分でコードを書く\n3. **発展**：調査や試行\n\nこれら3つのレベルのうち、**どれか1つ**に取り組めばその回の宿題は完了となります。原則として採点は行われません。\n\n（第1回）\n\n--- trace ---\n[tool call]   search_glossary({'query': '3レベル'})\n[tool return] search_glossary -> [{\"term\": \"宿題の3レベル\", \"lecture\": 1, \"definition\": \"AIE2026の宿題の構成。「基礎（講義内容の確認）」「実装（自分でコードを書く）」「発展（調査や試行）」の3段階があり、どれか1つに取り組…\n[usage] RunUsage(cost=Decimal('0.0007225'), details={'text_prompt_tokens': 1375}, input_text_tokens=1375, input_tokens=1375, output_tokens=124, requests=2, tool_calls=1)\n",
+    "seconds": 3.17,
+    "files_created": 0,
+    "saved_records": []
+  },
+  {
+    "label": "agent_lora",
+    "model": "gemini-3.5-flash-lite",
+    "module": "app.agent",
+    "args": [
+      "--trace",
+      "LoRAとQLoRAの違いは？"
+    ],
+    "approval_test_input": null,
+    "exit_code": 0,
+    "stdout": "[model] gemini-3.5-flash-lite\nLoRAとQLoRAの主な違いは以下の通りです。\n\n* **LoRA**: 事前学習済みの重みを固定し、重みの更新分（低ランク行列）のみを追加して学習するPEFT（Parameter-Efficient Fine-Tuning）手法です。学習パラメータや保存ファイルを少なく抑えられます。\n* **QLoRA**: LoRAの仕組みをベースにしつつ、**ベースモデルの重みを4ビットなどに量子化**して読み込むことで、GPUメモリの消費量を大幅に削減した手法です。これにより、さらに大きなモデルを小さなGPU環境でも学習できるようになります。\n\n（関連する回：第2回）\n\n--- trace ---\n[tool call]   search_glossary({'query': 'LoRA'})\n[tool call]   search_glossary({'query': 'QLoRA'})\n[tool return] search_glossary -> [{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラ…\n[tool return] search_glossary -> [{\"term\": \"QLoRA\", \"lecture\": 2, \"definition\": \"ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法。より大きなモデルを小さなGPUで扱える。本講座の第2…\n[usage] RunUsage(cost=Decimal('0.0009714'), details={'text_prompt_tokens': 1788}, input_text_tokens=1788, input_tokens=1788, output_tokens=174, requests=2, tool_calls=2)\n",
+    "seconds": 3.14,
+    "files_created": 0,
+    "saved_records": []
+  },
+  {
+    "label": "agent_quiz",
+    "model": "gemini-3.5-flash-lite",
+    "module": "app.agent",
+    "args": [
+      "--trace",
+      "第2回の内容から確認問題を1問出して"
+    ],
+    "approval_test_input": null,
+    "exit_code": 0,
+    "stdout": "[model] gemini-3.5-flash-lite\n第2回の内容から確認問題を1問出題します！\n\n**【問題】**\n「教師ありファインチューニング（SFT）」とはどのような手法ですか？\n\n（第2回）\n\n--- trace ---\n[tool call]   make_quiz({'lecture': 2})\n[tool return] make_quiz -> {\"question\": \"「教師ありファインチューニング（SFT）」の意味は？\", \"answer\": \"入力と望ましい出力のペア（例：質問と模範回答）を使ってモデルを追加学習させる方法。指示に従う振る舞いを身につけさせる代表的な手法。\"…\n[usage] RunUsage(cost=Decimal('0.0005363'), details={'text_prompt_tokens': 1321}, input_text_tokens=1321, input_tokens=1321, output_tokens=56, requests=2, tool_calls=1)\n",
+    "seconds": 2.81,
+    "files_created": 0,
+    "saved_records": []
+  },
+  {
+    "label": "save_denied",
+    "model": "gemini-3.5-flash-lite",
+    "module": "app.agent",
+    "args": [
+      "--trace",
+      "動作確認用の合成メモを学習ログに保存してください。見出しは「承認拒否の動作確認」、本文は「これは保存されないことを確かめる試験用メモです。」です。"
+    ],
+    "approval_test_input": "n\n",
+    "exit_code": 0,
+    "stdout": "[model] gemini-3.5-flash-lite\n\n[approval] save_learning_log\n{\n  \"title\": \"承認拒否の動作確認\",\n  \"content\": \"これは保存されないことを確かめる試験用メモです。\"\n}\n保存先: learning_log/（新規ファイル）。承認するまで保存しません。\nこの内容を保存しますか？ [y/N]: [approval] 拒否（保存しません）\n学習ログへの保存は承認されなかったため、保存されませんでした。\n\n--- trace ---\n[tool call]   save_learning_log({'title': '承認拒否の動作確認', 'content': 'これは保存されないことを確かめる試験用メモです。'})\n[tool return] save_learning_log -> The tool call was denied.…\n[usage] RunUsage(cost=Decimal('0.0005375'), details={'text_prompt_tokens': 1350}, input_text_tokens=1350, input_tokens=1350, output_tokens=53, requests=2)\n",
+    "seconds": 2.78,
+    "files_created": 0,
+    "saved_records": []
+  },
+  {
+    "label": "save_approved",
+    "model": "gemini-3.5-flash-lite",
+    "module": "app.agent",
+    "args": [
+      "--trace",
+      "動作確認用の合成メモを学習ログに保存してください。見出しは「承認付き保存の動作確認」、本文は「LoRAは基盤モデルの重みを固定し、追加した小さな行列を学習する。」です。"
+    ],
+    "approval_test_input": "y\n",
+    "exit_code": 0,
+    "stdout": "[model] gemini-3.5-flash-lite\n\n[approval] save_learning_log\n{\n  \"title\": \"承認付き保存の動作確認\",\n  \"content\": \"LoRAは基盤モデルの重みを固定し、追加した小さな行列を学習する。\"\n}\n保存先: learning_log/（新規ファイル）。承認するまで保存しません。\nこの内容を保存しますか？ [y/N]: [approval] 承認\n学習メモ「承認付き保存の動作確認」を学習ログに保存しました。\n\n--- trace ---\n[tool call]   save_learning_log({'title': '承認付き保存の動作確認', 'content': 'LoRAは基盤モデルの重みを固定し、追加した小さな行列を学習する。'})\n[tool return] save_learning_log -> {\"saved\": true, \"path\": \"learning_log/20261109T032338772152Z_4a71666ae2e9425c96cda0240cf0e43d.json\"}…\n[usage] RunUsage(cost=Decimal('0.0005942'), details={'text_prompt_tokens': 1439}, input_text_tokens=1439, input_tokens=1439, output_tokens=65, requests=2, tool_calls=1)\n",
+    "seconds": 2.72,
+    "files_created": 1,
+    "saved_records": [
+      {
+        "title": "承認付き保存の動作確認",
+        "content": "LoRAは基盤モデルの重みを固定し、追加した小さな行列を学習する。",
+        "created_at": "2026-11-09T03:23:38.772264+00:00"
+      }
+    ]
+  }
+]

@@ -1,0 +1,5 @@
+Python 3.12.14 / pydantic-ai-slim 2.57.0 / google-genai 2.31.0 / pytest 9.1.1
+既存11件＋追加17件
+28 passed in 2.41s
+
+既存MCPテストの子プロセスには、前の課題と同様にテスト用uvラッパーで書き込み可能なキャッシュと固定版環境を指定。依存版・uv.lockは変更していない。

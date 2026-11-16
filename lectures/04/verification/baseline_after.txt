@@ -1,0 +1,20 @@
+[model] gemini-3.5-flash-lite  temperature=0  rubric=data/eval/rubric.md
+採点中 10 件 ..........
+
+基準別の一致率（Codexラベル案と LLM の判定、10 件）
+  根拠                9/10
+  範囲               10/10
+  ヒント             10/10
+  分かりやすさ       10/10
+  回の表示（コード） 10/10
+総合の一致率   10/10   （自動判定できた 10/10 件 = coverage 100%）
+
+要確認 0 件（LLM が unsure にした項目。人が見る）
+
+不一致 1 件
+  #08 根拠         過検出（LLM=fail 自分=pass）  理由: 用語集の内容を勝手に出力しており、用語集エントリや期待するふるまいに反しています。
+
+→ lectures/04/verification/exercise_after.json に保存しました
+
+/Users/shoutarou/Documents/Codex/2026-11-02/new-chat/work/lecture-ai-engineering-2026/scripts/run_day04_eval.py:23: PydanticAIDeprecationWarning: `httpx.AsyncClient` support for Google providers is deprecated and will be removed in v3; use `httpx2.AsyncClient` instead.
+  return GoogleModel(name, provider=GoogleProvider(

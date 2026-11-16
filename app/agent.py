@@ -16,14 +16,16 @@ import inspect
 import json
 from pathlib import Path
 
-from pydantic_ai import Agent
-from pydantic_ai.exceptions import ModelHTTPError
+from pydantic_ai import Agent, DeferredToolRequests, DeferredToolResults
+from pydantic_ai.exceptions import ModelHTTPError, UsageLimitExceeded
 from fastmcp import Client
 from pydantic_ai.mcp import MCPToolset, StdioTransport
 from pydantic_ai.messages import ToolCallPart, ToolReturnPart
 from pydantic_ai.models.google import GoogleModel
 from pydantic_ai.models.test import TestModel
 from pydantic_ai.providers.google import GoogleProvider
+
+from pydantic_ai.usage import RunUsage, UsageLimits
 
 from app import tools
 from app.config import MODEL, api_error_message, get_api_key
@@ -35,14 +37,18 @@ INSTRUCTIONS = """\
 - 用語集に見つからないことは、推測で断定せず「用語集にはない」と伝える。
 - 回答の最後に、関係する回（第N回）を示す。
 - 宿題の答えそのものは書かず、考え方のヒントで導く。
+- 確認問題を求められたら make_quiz を使い、まず問題を提示する。
+- 学習内容の保存を明示的に頼まれたときだけ save_learning_log を使う。
+- 保存が拒否されたら再要求せず、保存していないと伝える。保存成功はツールの結果で確認する。
 """
 
 # モデルは実行時に渡す（テストではAPIを呼ばない TestModel に差し替えるため）
-agent = Agent(instructions=INSTRUCTIONS)
+agent = Agent(instructions=INSTRUCTIONS, output_type=[str, DeferredToolRequests])
 agent.tool_plain(tools.search_glossary)
 agent.tool_plain(tools.get_lecture_summary)
 
-# TODO(第3回 演習): tools.py に make_quiz を作り、ここで登録しよう
+agent.tool_plain(tools.make_quiz)
+agent.tool_plain(tools.save_learning_log, requires_approval=True)
 
 # 第5回: 使う MCP サーバーの設定ファイル。Claude Desktop や Cursor と同じ "mcpServers" 形式
 MCP_CONFIG = Path(__file__).resolve().parent / "mcp_servers.json"
@@ -109,6 +115,48 @@ def print_trace(result) -> None:
     print(f"[usage] {result.usage}")
 
 
+def collect_approvals(pending: DeferredToolRequests, input_fn=None) -> DeferredToolResults:
+    """ツール名と実際の保存引数を表示し、明示したy/yesだけを承認する。"""
+    if input_fn is None:
+        input_fn = input
+    decisions = {}
+    for call in pending.approvals:
+        print(f"\n[approval] {call.tool_name}")
+        print(json.dumps(call.args_as_dict(), ensure_ascii=False, indent=2))
+        print("保存先: learning_log/（新規ファイル）。承認するまで保存しません。")
+        while True:
+            try:
+                answer = input_fn("この内容を保存しますか？ [y/N]: ").strip().casefold()
+            except (EOFError, KeyboardInterrupt):
+                answer = "n"
+            if answer in ("y", "yes", "n", "no", ""):
+                break
+            print("y / yes で保存、n / no または空入力で拒否してください。")
+        decisions[call.tool_call_id] = answer in ("y", "yes")
+        print("[approval] " + ("承認" if decisions[call.tool_call_id] else "拒否（保存しません）"))
+    return DeferredToolResults(approvals=decisions)
+
+
+def run_with_approval(target: Agent, question: str, model, input_fn=None):
+    """承認待ちで中断し、同じ履歴と累積使用量で再開する。"""
+    usage = RunUsage()
+    limits = UsageLimits(request_limit=8, tool_calls_limit=12)
+    result = target.run_sync(question, model=model, usage=usage, usage_limits=limits)
+    for _ in range(3):
+        if not isinstance(result.output, DeferredToolRequests):
+            return result
+        if result.output.calls:
+            raise RuntimeError("外部実行待ちのツールには、このCLIは対応していません。")
+        decisions = collect_approvals(result.output, input_fn)
+        result = target.run_sync(
+            model=model, message_history=result.all_messages(),
+            deferred_tool_results=decisions, usage=usage, usage_limits=limits,
+        )
+    if isinstance(result.output, DeferredToolRequests):
+        raise RuntimeError("承認待ちが繰り返されたため停止しました。未承認の保存は実行しません。")
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="学習支援エージェントに質問する")
     parser.add_argument("question", nargs="?")
@@ -128,9 +176,12 @@ def main() -> None:
     if args.mcp:
         print("[tools] MCP サーバー（app/mcp_servers.json）")
     try:
-        result = target.run_sync(args.question, model=build_model())
+        result = run_with_approval(target, args.question, build_model())
     except ModelHTTPError as e:
         print(api_error_message(e.status_code, str(e.body)[:200]))
+        raise SystemExit(1)
+    except (UsageLimitExceeded, RuntimeError) as e:
+        print(f"処理を停止しました: {e}")
         raise SystemExit(1)
     print(result.output)
     if args.trace:

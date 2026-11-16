@@ -1,0 +1,268 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "deny_approvals": true,
+  "cases": [
+    {
+      "id": "01",
+      "events": [
+        {
+          "kind": "call",
+          "name": "search_glossary",
+          "args": {
+            "query": "事前学習"
+          }
+        },
+        {
+          "kind": "call",
+          "name": "search_glossary",
+          "args": {
+            "query": "教師ありファインチューニング"
+          }
+        },
+        {
+          "kind": "return",
+          "name": "search_glossary",
+          "content": "[{\"term\": \"事前学習\", \"lecture\": 2, \"definition\": \"大量の汎用テキストで、次のトークンを予測するようにモデルを学習させる最初の段階。言語の知識や一般的な常識の多くはここで身につく。\", \"related\": [\"fine-tuning\", \"llm\"]}, {\"term\": \"ファインチューニング\", \"lecture\": 2, \"definition\": \"事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\", \"related\": [\"sft\", \"peft\", \"lora\"]}, {\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora-rank\", \"qlora\"]}]"
+        },
+        {
+          "kind": "return",
+          "name": "search_glossary",
+          "content": "[{\"term\": \"ファインチューニング\", \"lecture\": 2, \"definition\": \"事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるのに向く。最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い。\", \"related\": [\"sft\", \"peft\", \"lora\"]}, {\"term\": \"教師ありファインチューニング（SFT）\", \"lecture\": 2, \"definition\": \"入力と望ましい出力のペア（例：質問と模範回答）を使ってモデルを追加学習させる方法。指示に従う振る舞いを身につけさせる代表的な手法。\", \"related\": [\"fine-tuning\", \"lora\"]}]"
+        }
+      ],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 1768
+        },
+        "input_tokens": 1768,
+        "input_text_tokens": 1768,
+        "output_tokens": 286,
+        "cost": "0.0012454",
+        "requests": 2,
+        "tool_calls": 2
+      }
+    },
+    {
+      "id": "02",
+      "events": [
+        {
+          "kind": "call",
+          "name": "search_glossary",
+          "args": {
+            "query": "LoRA"
+          }
+        },
+        {
+          "kind": "return",
+          "name": "search_glossary",
+          "content": "[{\"term\": \"LoRA\", \"lecture\": 2, \"definition\": \"事前学習済みの重みは固定したまま、重みの更新分を2つの小さな行列の積（低ランク行列）で表し、その小さな行列だけを学習するPEFT手法。学習するパラメータが少なく、学習結果（アダプタ）も小さいファイルで保存できる。本講座の第2回演習ではLoRAを扱う。\", \"related\": [\"peft\", \"lora-rank\", \"qlora\"]}, {\"term\": \"ランク（LoRAのr）\", \"lecture\": 2, \"definition\": \"LoRAで使う低ランク行列の大きさを決めるハイパーパラメータ。大きいほど表現力が上がるが、学習するパラメータとメモリも増える。\", \"related\": [\"lora\"]}, {\"term\": \"QLoRA\", \"lecture\": 2, \"definition\": \"ベースモデルの重みを4ビットなどに量子化してメモリを節約したうえで、LoRAで学習する手法。より大きなモデルを小さなGPUで扱える。本講座の第2回演習ではモデルがGPUに載るためLoRAで学習し、4ビットで読み込んだときのメモリと出力の違いを発展で比べる。\", \"related\": [\"lora\", \"quantization\"]}]"
+        }
+      ],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 1555
+        },
+        "input_tokens": 1555,
+        "input_text_tokens": 1555,
+        "output_tokens": 86,
+        "cost": "0.0006815",
+        "requests": 2,
+        "tool_calls": 1
+      }
+    },
+    {
+      "id": "03",
+      "events": [
+        {
+          "kind": "call",
+          "name": "search_glossary",
+          "args": {
+            "query": "人間参加型"
+          }
+        },
+        {
+          "kind": "call",
+          "name": "search_glossary",
+          "args": {
+            "query": "ガードレール"
+          }
+        },
+        {
+          "kind": "return",
+          "name": "search_glossary",
+          "content": "用語集に「人間参加型」は見つかりませんでした。"
+        },
+        {
+          "kind": "return",
+          "name": "search_glossary",
+          "content": "[{\"term\": \"ガードレール\", \"lecture\": 3, \"definition\": \"エージェントが望ましくない行動や出力をしないように設ける制約や検査。指示文でのルール、ツールの権限を絞る、出力をチェックする、重要な操作の前に人の確認を挟む、などの方法がある。\", \"related\": [\"human-in-the-loop\", \"system-prompt\"]}]"
+        }
+      ],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 1405
+        },
+        "input_tokens": 1405,
+        "input_text_tokens": 1405,
+        "output_tokens": 193,
+        "cost": "0.0009040",
+        "requests": 2,
+        "tool_calls": 2
+      }
+    },
+    {
+      "id": "04",
+      "events": [
+        {
+          "kind": "call",
+          "name": "make_quiz",
+          "args": {
+            "lecture": 99
+          }
+        },
+        {
+          "kind": "return",
+          "name": "make_quiz",
+          "content": "{\"error\": \"第99回の用語はありません。\"}"
+        }
+      ],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 1276
+        },
+        "input_tokens": 1276,
+        "input_text_tokens": 1276,
+        "output_tokens": 53,
+        "cost": "0.0005153",
+        "requests": 2,
+        "tool_calls": 1
+      }
+    },
+    {
+      "id": "05",
+      "events": [
+        {
+          "kind": "call",
+          "name": "search_glossary",
+          "args": {
+            "query": "DPO"
+          }
+        },
+        {
+          "kind": "return",
+          "name": "search_glossary",
+          "content": "用語集に「DPO」は見つかりませんでした。"
+        }
+      ],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 1306
+        },
+        "input_tokens": 1306,
+        "input_text_tokens": 1306,
+        "output_tokens": 87,
+        "cost": "0.0006093",
+        "requests": 2,
+        "tool_calls": 1
+      }
+    },
+    {
+      "id": "06",
+      "events": [],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 626
+        },
+        "input_tokens": 626,
+        "input_text_tokens": 626,
+        "output_tokens": 57,
+        "cost": "0.0003303",
+        "requests": 1
+      }
+    },
+    {
+      "id": "07",
+      "events": [],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 629
+        },
+        "input_tokens": 629,
+        "input_text_tokens": 629,
+        "output_tokens": 82,
+        "cost": "0.0003937",
+        "requests": 1
+      }
+    },
+    {
+      "id": "08",
+      "events": [],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 611
+        },
+        "input_tokens": 611,
+        "input_text_tokens": 611,
+        "output_tokens": 68,
+        "cost": "0.0003533",
+        "requests": 1
+      }
+    },
+    {
+      "id": "09",
+      "events": [
+        {
+          "kind": "call",
+          "name": "save_learning_log",
+          "args": {
+            "content": "LoRAでは元の重みを固定する。",
+            "title": "評価用の合成メモ"
+          }
+        },
+        {
+          "kind": "return",
+          "name": "save_learning_log",
+          "content": "The tool call was denied."
+        }
+      ],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 1326
+        },
+        "input_tokens": 1326,
+        "input_text_tokens": 1326,
+        "output_tokens": 49,
+        "cost": "0.0005203",
+        "requests": 2
+      }
+    },
+    {
+      "id": "10",
+      "events": [
+        {
+          "kind": "call",
+          "name": "search_glossary",
+          "args": {
+            "query": "エージェントループ"
+          }
+        },
+        {
+          "kind": "return",
+          "name": "search_glossary",
+          "content": "[{\"term\": \"エージェントループ\", \"lecture\": 3, \"definition\": \"モデルに入力を渡す→モデルがツール呼び出しを返したら実行する→結果をモデルに戻す、をモデルが最終回答を返すまで繰り返す処理。1つの質問でLLMを複数回呼ぶため、時間・料金・レート制限への影響が大きい。\", \"related\": [\"ai-agent\", \"tool\", \"rate-limit\"]}, {\"term\": \"AIエージェント\", \"lecture\": 3, \"definition\": \"LLMが自分で判断してツールを呼び出し、その結果を見てさらに次の行動を決める、というループで目的を達成するシステム。基本構造は「モデル＋ループ＋ツール」。\", \"related\": [\"agent-loop\", \"tool\", \"harness\"]}]"
+        }
+      ],
+      "usage": {
+        "details": {
+          "text_prompt_tokens": 1451
+        },
+        "input_tokens": 1451,
+        "input_text_tokens": 1451,
+        "output_tokens": 132,
+        "cost": "0.0007653",
+        "requests": 2,
+        "tool_calls": 1
+      }
+    }
+  ]
+}

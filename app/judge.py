@@ -25,7 +25,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent
 from pydantic_ai.exceptions import ModelHTTPError, UnexpectedModelBehavior
-from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart, UserPromptPart
+from pydantic_ai.messages import ModelMessage, ModelResponse, ToolCallPart, ToolReturnPart, UserPromptPart
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 from pydantic_ai.models.google import GoogleModel
 from pydantic_ai.providers.google import GoogleProvider
@@ -301,17 +301,37 @@ def compare_labels(a: dict[str, dict], b: dict[str, dict], name_a: str, name_b: 
 
 
 # ---------------------------------------------------------------- 回答の生成（宿題・実装）
-def generate_answers(cases: list[dict], wait: float = 1.0) -> list[dict]:
-    """評価セットの各質問を自分のエージェント（app.agent）に投げ、回答を埋める。"""
-    from app.agent import agent, build_model
+def generate_answers(cases: list[dict], wait: float = 1.0, *, deny_approvals: bool = False,
+                     trace_path: Path | None = None) -> list[dict]:
+    """第3回の承認フローを維持して生成する。無人評価では承認を自動拒否できる。"""
+    from app.agent import agent, build_model, run_with_approval
 
     model = build_model()
+    traces = []
     print(f"回答を生成中 {len(cases)} 件 ", end="", flush=True)
     for case in cases:
-        result = agent.run_sync(case["question"], model=model)
-        case["answer"] = str(result.output)
+        result = run_with_approval(
+            agent, case["question"], model,
+            input_fn=(lambda _: "n") if deny_approvals else None,
+        )
+        if not isinstance(result.output, str):
+            raise RuntimeError("回答が文字列ではありません。承認フローを確認してください。")
+        case["answer"] = result.output
+        events = []
+        for message in result.all_messages():
+            for part in message.parts:
+                if isinstance(part, ToolCallPart):
+                    events.append({"kind": "call", "name": part.tool_name, "args": part.args_as_dict()})
+                elif isinstance(part, ToolReturnPart):
+                    events.append({"kind": "return", "name": part.tool_name, "content": str(part.content)})
+        traces.append({"id": case["id"], "events": events, "usage": result.usage.__dict__})
+        if trace_path:
+            trace_path.parent.mkdir(parents=True, exist_ok=True)
+            trace_path.write_text(json.dumps({"model": MODEL, "deny_approvals": deny_approvals,
+                                              "cases": traces}, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
         print(".", end="", flush=True)
-        time.sleep(wait)
+        if wait:
+            time.sleep(wait)
     print()
     return cases
 
@@ -331,6 +351,9 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--wait", type=float, default=0.0, help="1 件ごとに待つ秒数（レート制限にかかるとき）")
     parser.add_argument("--compare", type=Path, help="LLM を呼ばず、このラベルファイルと --labels の一致率を出す")
     parser.add_argument("--generate", action="store_true", help="評価セットの回答を自分のエージェントで生成し直す（--cases に上書き）")
+    parser.add_argument("--deny-approvals", action="store_true", help="回答生成時の承認要求を全て拒否する（無人評価用、保存しない）")
+    parser.add_argument("--trace-out", type=Path, help="回答生成時のツール呼び出し・戻り値・使用量を保存する。個人情報を含む質問では公開しない")
+    parser.add_argument("--labeler", default="自分のラベル", help="比較対象ラベルの作成者（AI案はその旨を明記）")
     args = parser.parse_args(argv)
 
     if args.compare:
@@ -343,7 +366,7 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.generate:
         try:
-            cases = generate_answers(cases)
+            cases = generate_answers(cases, deny_approvals=args.deny_approvals, trace_path=args.trace_out)
         except ModelHTTPError as e:
             print(api_error_message(e.status_code, str(e.body)[:200]))
             raise SystemExit(1)
@@ -376,12 +399,12 @@ def main(argv: list[str] | None = None) -> None:
         raise SystemExit(1)
 
     summary = summarize(cases, verdicts, labels)
-    print_summary(summary)
+    print_summary(summary, labeler=args.labeler)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(
-            {"model": model_name, "rubric": str(_rel(args.rubric)), "run_at": datetime.now().isoformat(timespec="seconds"),
+            {"model": model_name, "labeler": args.labeler, "rubric": str(_rel(args.rubric)), "run_at": datetime.now().isoformat(timespec="seconds"),
              "verdicts": verdicts, "summary": summary},
             ensure_ascii=False, indent=2,
         ),

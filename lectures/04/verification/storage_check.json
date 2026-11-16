@@ -1,0 +1,7 @@
+{
+  "test": "synthetic case 09, automatic rejection",
+  "before_json_count": 1,
+  "after_json_count": 1,
+  "new_files": 0,
+  "source": "directory snapshots before case 09 and after generation; see generation_trace.json for ToolDenied"
+}

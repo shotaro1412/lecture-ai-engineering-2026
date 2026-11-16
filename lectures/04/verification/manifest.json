@@ -1,0 +1,13 @@
+{
+  "base_tag": "lec04-start",
+  "agent_source": "lec03",
+  "model": "gemini-3.5-flash-lite",
+  "judge_temperature": 0,
+  "label_source": "Codex draft, not independently human-labelled",
+  "inputs_sha256": {
+    "data/eval/my_cases.jsonl": "157b99680bafee0c895cbe63cf1526ef65b4724ec9760c80c3f9f5b7fd52a125",
+    "lectures/04/my_labels_codex.jsonl": "b11c150c28baf708c2b20d8ccbd227b7de0a74c8897eef791354fa5352026a53",
+    "data/eval/rubric.md": "d84fd0875f3c694e98a14557bdccde32c371183b6a50547172cc6923e38cac62",
+    "lectures/04/verification/rubric_before.md": "38b9f33a5ba0a93359ed78651b3048821c58f856d6a9839f79d8e90ba8bd5198"
+  }
+}

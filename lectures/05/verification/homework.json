@@ -1,0 +1,1312 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "temperature": 0,
+  "started_at": "2026-11-23T06:00:40.824287+00:00",
+  "source_sha256": "f6022c177ec1b5575b56d21307a5ae2aa09c586047398a17e1e4b86a56e99dce",
+  "index_sha256": "600d7a3633d84c21b6b26d511f9cd701d7dbee32bfe8eab0fd6fee3affb0f69e",
+  "cases": [
+    {
+      "id": "single",
+      "query": "LoRA QLoRA 違い",
+      "question": "第2回の説明では、LoRAは何を固定し何を学習しますか？ QLoRAは何を加えますか？",
+      "expected_pages": [
+        "lec02-main-p052"
+      ],
+      "expected": "元の重みを固定して小さな差分を学習し、QLoRAでは元の重みを4bitに圧縮する。"
+    },
+    {
+      "id": "memory",
+      "query": "コンパクション セッションをまたぐメモリ 日々のメモ 長期メモリ",
+      "question": "コンパクションとセッションをまたぐメモリの違いは？ 日々のメモは全部長期メモリになりますか？",
+      "expected_pages": [
+        "lec03-main-p013",
+        "lec03-main-p039",
+        "lec03-main-p040"
+      ],
+      "expected": "コンパクションは同じセッションの履歴の要約。外部のメモリは次のセッションで読み戻す。長期メモリには選んだものだけ移す。"
+    },
+    {
+      "id": "absent",
+      "query": "今回作ったRAG 実測平均応答時間 正答率",
+      "question": "今回作ったRAGの実測平均応答時間と正答率は、それぞれいくつですか？",
+      "expected_pages": [],
+      "expected": "講義資料には今回の実測ログがないので、数値を捏造せず確認できないと答える。"
+    },
+    {
+      "id": "adjacent",
+      "query": "LoRA QLoRA 違い",
+      "question": "LoRAとQLoRAの違いに加えて、その説明の直後のチャットボットのページで、形式だけ守らせるなら何が先か、FTが効く振る舞いの例は何かを説明してください。",
+      "expected_pages": [
+        "lec02-main-p052",
+        "lec02-main-p053"
+      ],
+      "expected": "LoRA/QLoRAを説明し、形式だけならAPIの構造化出力が先、FTは口調や根拠の付け方などの振る舞いに効くとp.53を根拠に述べる。"
+    }
+  ],
+  "runs": [
+    {
+      "id": "single-baseline",
+      "question": "第2回の説明では、LoRAは何を固定し何を学習しますか？ QLoRAは何を加えますか？",
+      "query": "LoRA QLoRA 違い",
+      "seed_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061"
+      ],
+      "retrieved_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061"
+      ],
+      "page_count": 5,
+      "retrieval_seconds": 0.592,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": false,
+        "results": [
+          {
+            "page_id": "lec02-main-p052",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "LoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる",
+            "page": 52,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nLoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる\n元の重みは固定し、小さな「差分」だけを学習する（ LoRA ）。さらに元の重みを 4bit に圧縮する（ QLoRA ）\n出典： E. J. Hu et al. 「 LoRA 」（ ICLR 2022 ）／ T. Dettmers et al. 「 QLoRA 」（ NeurIPS 2023 ）。演習では transformers ・ peft ・ bitsandbytes ・ TRL を使用\nLoRA （ Hu et al. Fig.1 ）： A と B だけを学習する\n青：元の重み W\n固定して学習しない。 QLoRA では\n4bit （数値を粗く保存）にして\n約 1/4 。 7B なら約 4GB\n橙：小さな行列 A ・ B\nこれだけを学習。細長い 2 つの\n行列の積で、変化分を表す（低ランク）\nイメージ\n本体はそのままに、薄い「付箋」を\n書き足す。学習するのは全体の\n1% 未満にもできる\n650 億\nパラメータのモデルを\n48GB GPU 1 台\nで微調整（ QLoRA 論文）\n• Colab の GPU （例： 16GB ）でも、\n数十億パラメータ級なら調整できる。今日の\n演習はこれ\n• データの準備・評価・運用の手間は別にかかる\n© Matsuo-Iwasawa Lab, The University of Tokyo 52\n\n【図表・画像内の補足文字起こし】\nLoRA図：Pretrained Weights W ∈ R^(d×d)、x、h、A ~ N(0, σ²)、B = 0、d、r。",
+            "distance": 0.2205355018377304
+          },
+          {
+            "page_id": "lec02-main-p051",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "PEFT ：モデル全体ではなく、一部だけを学習する",
+            "page": 51,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nPEFT ：モデル全体ではなく、一部だけを学習する\n全パラメータを更新する FT は重い。少数のパラメータだけを学習する方法（ PEFT ）が主流になった\n出典：各手法の原論文（ Houlsby+ 2019 ／ Li & Liang 2021 ／ Lester+ 2021 ／ Hu+ 2022 ）。 Hugging Face PEFT ライブラリで利用可能\nどこを学習するか（ Dettmers et al. Fig.1 ）\nFull Fine-Tuning\n全パラメータを更新。メモリも保存容量も大きい\nLoRA\n本体は固定し、小さな追加部分だけ更新\nQLoRA\nさらに本体を 4bit に圧縮して省メモリ\nPEFT の主な方法\nアダプタ\n層の間に小さな層を差し込み、そこだけ学習\nHoulsby et al. 2019\nプレフィックス／プロンプトチューニング\n入力の前に学習できる「仮想トークン」を付ける\nLi & Liang 2021 ／ Lester et al. 2021\nLoRA\n重みの変化を、細長い 2 つの小さな行列の積（低ランク）で表して学習\nHu et al. 2022 　← 現在最も広く使われる\nQLoRA\nLoRA ＋元の重みを 4bit に圧縮。さらに少ないメモリで\nDettmers et al. 2023 　← 次のスライド\n© Matsuo-Iwasawa Lab, The University of Tokyo 51\n\n【図表・画像内の補足文字起こし】\n比較図：Full Finetuning (No Adapters)／LoRA／QLoRA。Optimizer、Adapters、16-bit Transformer、4-bit Transformer。",
+            "distance": 0.2483736127614975
+          },
+          {
+            "page_id": "lec02-main-p060",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "今日の演習： QLoRA で出力形式を矯正し、効果を測る",
+            "page": 60,
+            "content": "演習\n今日の演習： QLoRA で出力形式を矯正し、効果を測る\n事前宿題（ Colab ＋ FastAPI ＋ ngrok での API 化、温度による揺れの観察）の続きから\n準備\n事前宿題で詰まった点を\n解消する\n前を測る\n形式遵守率を測る（同じ\n温度で複数回）\nQLoRA で学習\n形式を守った手本で\n微調整する\n後を測る\nFT 後のモデルに\n差し替え、同じ質問で\n測る\n対照：知識の質問\n変わらないはず。\n変わったら評価を疑う\n形式遵守率＝ JSON として読み込め、決めた項目（ answer ・ slide ・ confidence ）がそろった回答の割合。「直った」は、前後で\n同じ評価をして初めて言える\n© Matsuo-Iwasawa Lab, The University of Tokyo 60",
+            "distance": 0.2852519452571869
+          },
+          {
+            "page_id": "lec02-main-p047",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "根拠と諸説：知識の追加は RAG が効きやすい",
+            "page": 47,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n根拠と諸説：知識の追加は RAG が効きやすい\nただし「 FT で知識が全く入らない」わけではない。例外も知ったうえで、基本線として覚える\n出典： Ovadia+ EMNLP 2024 ／ Gekhman+ EMNLP 2024 ／ Biderman+ TMLR 2024 ／ Zhou+ (LIMA) NeurIPS 2023\n研究の報告（基本線）\nOvadia et al. （ 2024 ）\n知識を問う課題で、 RAG が「文書をそのまま学習させる FT 」を一貫して\n上回った\nGekhman et al. （ 2024 ）\n新しい知識を含む手本は覚えるのが遅く、覚えるほど誤り\n（ハルシネーション）が増える傾向\nBiderman et al. （ 2024 ）\nLoRA は全体を学習する FT より「学ぶ量が少なく、忘れる量も少ない」。\n小さな調整向き\n例外・諸説\n• 大量の文章で継続事前学習（ CPT ）すれば、\n言語・専門知識も入る（日本語の Swallow など）\n• 同じ事実を多様に言い換えて学習させると、\nFT でも知識が入りやすくなる\n• 振る舞いは、良質な手本 1,000 件程度でも\n大きく変わる（ LIMA ）\n• 大きいモデルの振る舞いを小さいモデルに移す\n（蒸留）ことで、速く安くする目的でも使われる\n© Matsuo-Iwasawa Lab, The University of Tokyo 47",
+            "distance": 0.3186967074871063
+          },
+          {
+            "page_id": "lec02-main-p061",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "演習の進め方と提出物（仮）",
+            "page": 61,
+            "content": "演習\n演習の進め方と提出物（仮）\n時間は目安。前後で「同じ質問・同じ温度・同じ回数」で測ることが大事\n1 準備 10 分 事前宿題の不具合を直し、 API が動くことを確かめる\n2 FT 前を測る 10 分\n評価用 30 問 ×3 回で形式遵守率。普通の質問 10 問の\n答えも保存\n3 QLoRA で学習 20 分 手本 200 件で学習（ Colab の GPU で十数分）\n4 FT 後を測る 10 分 モデルを差し替え、 2 と同じ質問・温度・回数で測る\n5 対照：知識の質問 5 分\n手本に事実を入れていないので、変わらないはず。変わったら\n評価か学習の誤りを疑う\n提出物\n• 前後の比較表（形式遵守率・普通の\n質問の答え）\n• 直らなかった質問の例を 2 つ\n• 考察を 3 行：何が直り、何が直らず、\nなぜか\n評価用の 30 問は学習用と重ならないものを使う。差が小さいときは誤差の範囲かもしれないので、 3 回分のばらつきも書く\n© Matsuo-Iwasawa Lab, The University of Tokyo 61",
+            "distance": 0.3269001543521881
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます。\n\n資料によると、LoRAおよびQLoRAの仕組みについては以下のページに記載されています。\n\n- 資料名：基盤モデルの仕組み（講義2）\n- 該当ページ：51ページ、52ページ\n\nLoRAでは、モデルの本体（元の重み）は固定して学習せず、変化分を表す小さな追加部分（細長い2つの小さな行列の積）だけを学習します。\nそしてQLoRAでは、そのLoRAの手法に加えて、元となる重みをさらに「4bit」に圧縮するという要素が加えられています。\n\n具体的なイメージとして、モデル本体という「大きな土台」に対してどのような部分を動かすのか、テキストの「付箋」のたとえや図を参考に考えてみてくださいね。",
+      "seconds": 2.174,
+      "usage": {
+        "input_tokens": 2511,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 163,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 2511
+        },
+        "cost": "0.0011608",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 2.17 秒（検索・埋め込みを含む）\n[usage] 入力 2,511 tokens / 出力 163 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.001161 USD（埋め込み・索引構築分は含まない）\n"
+    },
+    {
+      "id": "single-neighbors",
+      "question": "第2回の説明では、LoRAは何を固定し何を学習しますか？ QLoRAは何を加えますか？",
+      "query": "LoRA QLoRA 違い",
+      "seed_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061"
+      ],
+      "retrieved_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061",
+        "lec02-main-p053",
+        "lec02-main-p050",
+        "lec02-main-p059",
+        "lec02-main-p046",
+        "lec02-main-p048",
+        "lec02-main-p062"
+      ],
+      "page_count": 11,
+      "retrieval_seconds": 0.518,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": true,
+        "results": [
+          {
+            "page_id": "lec02-main-p052",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "LoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる",
+            "page": 52,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nLoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる\n元の重みは固定し、小さな「差分」だけを学習する（ LoRA ）。さらに元の重みを 4bit に圧縮する（ QLoRA ）\n出典： E. J. Hu et al. 「 LoRA 」（ ICLR 2022 ）／ T. Dettmers et al. 「 QLoRA 」（ NeurIPS 2023 ）。演習では transformers ・ peft ・ bitsandbytes ・ TRL を使用\nLoRA （ Hu et al. Fig.1 ）： A と B だけを学習する\n青：元の重み W\n固定して学習しない。 QLoRA では\n4bit （数値を粗く保存）にして\n約 1/4 。 7B なら約 4GB\n橙：小さな行列 A ・ B\nこれだけを学習。細長い 2 つの\n行列の積で、変化分を表す（低ランク）\nイメージ\n本体はそのままに、薄い「付箋」を\n書き足す。学習するのは全体の\n1% 未満にもできる\n650 億\nパラメータのモデルを\n48GB GPU 1 台\nで微調整（ QLoRA 論文）\n• Colab の GPU （例： 16GB ）でも、\n数十億パラメータ級なら調整できる。今日の\n演習はこれ\n• データの準備・評価・運用の手間は別にかかる\n© Matsuo-Iwasawa Lab, The University of Tokyo 52\n\n【図表・画像内の補足文字起こし】\nLoRA図：Pretrained Weights W ∈ R^(d×d)、x、h、A ~ N(0, σ²)、B = 0、d、r。",
+            "distance": 0.2205355018377304,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p051",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "PEFT ：モデル全体ではなく、一部だけを学習する",
+            "page": 51,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nPEFT ：モデル全体ではなく、一部だけを学習する\n全パラメータを更新する FT は重い。少数のパラメータだけを学習する方法（ PEFT ）が主流になった\n出典：各手法の原論文（ Houlsby+ 2019 ／ Li & Liang 2021 ／ Lester+ 2021 ／ Hu+ 2022 ）。 Hugging Face PEFT ライブラリで利用可能\nどこを学習するか（ Dettmers et al. Fig.1 ）\nFull Fine-Tuning\n全パラメータを更新。メモリも保存容量も大きい\nLoRA\n本体は固定し、小さな追加部分だけ更新\nQLoRA\nさらに本体を 4bit に圧縮して省メモリ\nPEFT の主な方法\nアダプタ\n層の間に小さな層を差し込み、そこだけ学習\nHoulsby et al. 2019\nプレフィックス／プロンプトチューニング\n入力の前に学習できる「仮想トークン」を付ける\nLi & Liang 2021 ／ Lester et al. 2021\nLoRA\n重みの変化を、細長い 2 つの小さな行列の積（低ランク）で表して学習\nHu et al. 2022 　← 現在最も広く使われる\nQLoRA\nLoRA ＋元の重みを 4bit に圧縮。さらに少ないメモリで\nDettmers et al. 2023 　← 次のスライド\n© Matsuo-Iwasawa Lab, The University of Tokyo 51\n\n【図表・画像内の補足文字起こし】\n比較図：Full Finetuning (No Adapters)／LoRA／QLoRA。Optimizer、Adapters、16-bit Transformer、4-bit Transformer。",
+            "distance": 0.2483736127614975,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p060",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "今日の演習： QLoRA で出力形式を矯正し、効果を測る",
+            "page": 60,
+            "content": "演習\n今日の演習： QLoRA で出力形式を矯正し、効果を測る\n事前宿題（ Colab ＋ FastAPI ＋ ngrok での API 化、温度による揺れの観察）の続きから\n準備\n事前宿題で詰まった点を\n解消する\n前を測る\n形式遵守率を測る（同じ\n温度で複数回）\nQLoRA で学習\n形式を守った手本で\n微調整する\n後を測る\nFT 後のモデルに\n差し替え、同じ質問で\n測る\n対照：知識の質問\n変わらないはず。\n変わったら評価を疑う\n形式遵守率＝ JSON として読み込め、決めた項目（ answer ・ slide ・ confidence ）がそろった回答の割合。「直った」は、前後で\n同じ評価をして初めて言える\n© Matsuo-Iwasawa Lab, The University of Tokyo 60",
+            "distance": 0.2852519452571869,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p047",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "根拠と諸説：知識の追加は RAG が効きやすい",
+            "page": 47,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n根拠と諸説：知識の追加は RAG が効きやすい\nただし「 FT で知識が全く入らない」わけではない。例外も知ったうえで、基本線として覚える\n出典： Ovadia+ EMNLP 2024 ／ Gekhman+ EMNLP 2024 ／ Biderman+ TMLR 2024 ／ Zhou+ (LIMA) NeurIPS 2023\n研究の報告（基本線）\nOvadia et al. （ 2024 ）\n知識を問う課題で、 RAG が「文書をそのまま学習させる FT 」を一貫して\n上回った\nGekhman et al. （ 2024 ）\n新しい知識を含む手本は覚えるのが遅く、覚えるほど誤り\n（ハルシネーション）が増える傾向\nBiderman et al. （ 2024 ）\nLoRA は全体を学習する FT より「学ぶ量が少なく、忘れる量も少ない」。\n小さな調整向き\n例外・諸説\n• 大量の文章で継続事前学習（ CPT ）すれば、\n言語・専門知識も入る（日本語の Swallow など）\n• 同じ事実を多様に言い換えて学習させると、\nFT でも知識が入りやすくなる\n• 振る舞いは、良質な手本 1,000 件程度でも\n大きく変わる（ LIMA ）\n• 大きいモデルの振る舞いを小さいモデルに移す\n（蒸留）ことで、速く安くする目的でも使われる\n© Matsuo-Iwasawa Lab, The University of Tokyo 47",
+            "distance": 0.3186967074871063,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p061",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "演習の進め方と提出物（仮）",
+            "page": 61,
+            "content": "演習\n演習の進め方と提出物（仮）\n時間は目安。前後で「同じ質問・同じ温度・同じ回数」で測ることが大事\n1 準備 10 分 事前宿題の不具合を直し、 API が動くことを確かめる\n2 FT 前を測る 10 分\n評価用 30 問 ×3 回で形式遵守率。普通の質問 10 問の\n答えも保存\n3 QLoRA で学習 20 分 手本 200 件で学習（ Colab の GPU で十数分）\n4 FT 後を測る 10 分 モデルを差し替え、 2 と同じ質問・温度・回数で測る\n5 対照：知識の質問 5 分\n手本に事実を入れていないので、変わらないはず。変わったら\n評価か学習の誤りを疑う\n提出物\n• 前後の比較表（形式遵守率・普通の\n質問の答え）\n• 直らなかった質問の例を 2 つ\n• 考察を 3 行：何が直り、何が直らず、\nなぜか\n評価用の 30 問は学習用と重ならないものを使う。差が小さいときは誤差の範囲かもしれないので、 3 回分のばらつきも書く\n© Matsuo-Iwasawa Lab, The University of Tokyo 61",
+            "distance": 0.3269001543521881,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p053",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "チャットボットの場合：何を FT し、何を FT しないか",
+            "page": 53,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nチャットボットの場合：何を FT し、何を FT しないか\n今日の演習のテーマ。実務では、まずプロンプトや API の形式指定を試す\nFT で直す：出力の形式\n必ずこの形式（ JSON）で返してほしい\n{\n  \"answer\": \"RAGとは、資料を検索して… \",\n  \"slide\": 13,\n  \"confidence\": \"high\"\n}\nFT では直らない：知識\n「第 2 回の演習で使う GPU は何？」のように、資料にしかない\n事実は、 FT しても答えられるようにはなりにくい\n→ 検索して渡す（ RAG 、第 5 回）\n今回の手本には事実を入れていないので、知識が増えないのは当然。\nそれを測って確かめる\n演習で JSON を使うのは、効果を数えやすいから。実務で形だけ守らせるなら API の構造化出力が先。 FT が効くのは、\n口調・根拠の付け方など書式で縛れない振る舞い\n© Matsuo-Iwasawa Lab, The University of Tokyo 53",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p052"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p050",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "判断の順番：測る → 分ける → プロンプト → Fine-Tuning",
+            "page": 50,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n判断の順番：測る → 分ける → プロンプト → Fine-Tuning\n第 1 回の「モデル・手法の大別」の具体版。安く速く試せる方法から順に、評価で確かめながら進む\n1\n まず評価セットを作る\n 直ったかどうかを測るため（第 4 回）\n2\n 直したいのは知識？振る舞い？\n 知識 → 検索して渡す（ RAG 、第 5 回）\n3\n プロンプト（指示・例示）で直る？\n 直る → それで十分（第 9 回）\n4\n それでも直らない振る舞いがある\n → Fine-Tuning を検討\n© Matsuo-Iwasawa Lab, The University of Tokyo 50",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p051"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p059",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "第 2 回のまとめ： 4 つの芯と、明日やること",
+            "page": 59,
+            "content": "まとめ\n第 2 回のまとめ： 4 つの芯と、明日やること\n仕組みが分かると、次の一手が決まる\n芯（なぜ） 明日やること\n1\n LLM は確率で次の言葉を選ぶ\n 同じ質問を複数回＋答えられない質問で測ってから使う（ガイド 1 ）\n2\n 渡す・選ぶ／直す／考えさせる\n症状から打ち手を選ぶ。知識は渡す・選ぶ、答え方はまずプロンプト、難問は\n考えさせる（ガイド 2 ）\n3\n 地図を持ち、「コスト＜効果」で選ぶ\n 候補を 3 つ選び、自分の評価セットで精度・料金・待ち時間を比べる（ガイド 3 ）\n4\n FT は振る舞いに強く、知識は苦手\nチェックリストの 6 項目に✓が付いてから、 LoRA ／ QLoRA で小さく始める\n（ガイド 4 ）\n次の一歩　 PM 志望：自分の題材で評価用の質問を 20 問書く　エンジニア志望：演習の JSON を、 API の構造化出力とも比べる　\nML 専攻： Gekhman et al. 2024 ・ Biderman et al. 2024 を読む\n© Matsuo-Iwasawa Lab, The University of Tokyo 59",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p060"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p046",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "小規模な FT は振る舞いに強く、知識の追加は苦手",
+            "page": 46,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n小規模な FT は振る舞いに強く、知識の追加は苦手\nこの 15 分の芯\n「振る舞い」はプロンプトで直らなければ Fine-Tuning 、\n「知識」ならまず検索（ RAG ）\n振る舞い：出力形式・口調・手順の守り方。少量の手本で変わる\n知識：新しい事実・最新の資料。 FT で覚えさせるのは非効率で、誤りが増える報告も\nコスト：短いプロンプト・小さいモデルで同じ振る舞いを出せれば、速く安くなる\n© Matsuo-Iwasawa Lab, The University of Tokyo 46",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p047"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p048",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "継続事前学習（ CPT ）：知識・言語を足す追加学習",
+            "page": 48,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n継続事前学習（ CPT ）：知識・言語を足す追加学習\n質問と回答の手本ではなく、専門分野の文章そのもので「次のトークン予測」を続ける\n出典： Swallow （東京科学大学・産総研）／ AIRoA （ 2026 ）ほか。 S. Gururangan et al. 「 Don't Stop Pretraining 」（ ACL 2020 ）\nよくある学習の流れ\n事前学習済み\nモデル\n継続事前学習\n専門の文章で\nSFT\n指示に従わせる\nRL ・評価\n振る舞いを整える\n向いている場面\n• 専門分野の言葉・知識を広く身に\nつけさせたい（医療・法律・日本語など）\n• 大量の文章はあるが、質問と回答の\n手本はない\nかかるもの\n• 数十億〜数千億トークン規模の文章\n• 多数の GPU と、学習・評価の手間\n注意点\n• 元の能力を忘れる（一般の文章も混ぜる）\n• 後から指示に従わせる SFT が必要\n• 頻繁に変わる情報には向かない\n例： Swallow （ Llama などに日本語を継続事前学習）、 AIRoA （ロボット）。医療・法律などの分野適応にも\n© Matsuo-Iwasawa Lab, The University of Tokyo 48",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p047"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p062",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "次回： AI エージェント。今日の性質が設計の前提になる",
+            "page": 62,
+            "content": "次回予告\n次回： AI エージェント。今日の性質が設計の前提になる\nエージェント＝今日のモデルに、道具・ループ・記憶を付けて「行動」させる仕組み（今日の 5 枚目の図の外側）\n今日わかったこと エージェントでは、こう効いてくる\n確率で選ぶ（答えが揺れる）\n 同じ依頼でも、毎回ちがう手順になる。 1 回の成功を信じず、複数回測る\nそれらしく誤る\n ない道具を呼ぶ・結果を読み違える。結果を確かめる仕組みと、止める条件が要る\n長い文脈を均等に使えない\n 作業が長くなると、前の指示や結果を見落とす。記憶の整理が要る\n形式を守らせる（今日の演習）\n 道具の呼び出しは JSON などの決まった形式。形式を守る力が土台になる\nコスト＜効果\n ループするほどトークンが増える。どこを AI に任せ、どこをプログラムで決めるか\n今日の最後に（ 1 分）　フォームに「一番わからなかったこと」と「明日やること 1 つ」を書く。次回の冒頭で取り上げる\n次回までに（仮）　演習の結果を提出。 ChatGPT などが検索するとき、何をしているか観察してくる\n© Matsuo-Iwasawa Lab, The University of Tokyo 62",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p061"
+            ]
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます。\n\n資料によると、LoRA および QLoRA における学習対象と追加要素については以下のように説明されています。\n\n- **LoRA**\n  - **固定するもの**：「元の重み」を固定し、学習しないようにします。\n  - **学習するもの**：細長い2つの小さな行列の積（低ランク）で表される、小さな「差分」（追加部分）だけを学習します。\n- **QLoRA**\n  - LoRAの仕組みに加え、**元の重みを「4bit」に圧縮（数値を粗く保存）する**という処理を加えます。\n\n詳細については、以下の資料とページ番号をご確認ください。\n\n- 資料名：基盤モデルの仕組み (`lec02-main`)\n- ページ番号：51ページ、52ページ",
+      "seconds": 2.163,
+      "usage": {
+        "input_tokens": 4934,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 173,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 4934
+        },
+        "cost": "0.0019127",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 2.16 秒（検索・埋め込みを含む）\n[usage] 入力 4,934 tokens / 出力 173 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.001913 USD（埋め込み・索引構築分は含まない）\n"
+    },
+    {
+      "id": "memory-neighbors",
+      "question": "コンパクションとセッションをまたぐメモリの違いは？ 日々のメモは全部長期メモリになりますか？",
+      "query": "コンパクション セッションをまたぐメモリ 日々のメモ 長期メモリ",
+      "seed_ids": [
+        "lec03-main-p065",
+        "lec03-main-p038",
+        "lec03-main-p039",
+        "lec03-main-p040",
+        "lec03-main-p013"
+      ],
+      "retrieved_ids": [
+        "lec03-main-p065",
+        "lec03-main-p038",
+        "lec03-main-p039",
+        "lec03-main-p040",
+        "lec03-main-p013",
+        "lec03-main-p064",
+        "lec03-main-p066",
+        "lec03-main-p037",
+        "lec03-main-p041",
+        "lec03-main-p012",
+        "lec03-main-p014"
+      ],
+      "page_count": 11,
+      "retrieval_seconds": 0.455,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": true,
+        "results": [
+          {
+            "page_id": "lec03-main-p065",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：メモリと Context Engineering の最新動向",
+            "page": 65,
+            "content": "補足：メモリと Context Engineering の最新動向\n履歴の要約（コンパクション）とファイル型のメモリが、API の機能として提供されるようになった。保存と再注入である\n点は変わらない。\n何が変わったか\n項目 更新内容 時点\n自動のコンパクション サーバー側で履歴を要約する API が、ベータで提供開始 2026/2/5\n任意時点のコンパクショ\nン\n要約する時点を、アプリケーションが決められる。要約に置き換えた範囲の画像や\n文書は失われる\n2026/9/14 ベータ\nメモリツール モデルがファイル操作を要求し、アプリケーションが自分の保存先で実行する。ベ\nータ指定が不要に\n2026/2/17\n講義の内容との関係。本編の3つの範囲のうち、「ループの中の履歴\n」の圧縮がコンパクション、「セッションをまたぐ記録」がメモリツ\nールに当たる。重みは変わらない。\n使うときの注意。保存先の管理はアプリケーションの責任。文書は保\n存先の外を指すパスを検証するよう求めている。要約で落ちた途中の\n指示は、以後は効かない。\n出典）Anthropic「Claude Platform release notes」（2026/2/5、2/17、9/14）、「Memory tool」、任意時点のコンパクションの文書（後の2つは日付記載なし）。\n情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "distance": 0.26724541187286377,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec03-main-p038",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "メモリがないと、毎回ゼロからやり直しになる",
+            "page": 38,
+            "content": "メモリがないと、毎回ゼロからやり直しになる\n「失敗しているテストを直して」を翌日また頼んだら、前回見つけた原因は使えるでしょうか？\n出典）Luo et al.「From Storage to Experience」arXiv:2605.06716（2026/5/7、ACL 2026 Findings）の§1・§3.2、Ding et al.「Always-On Agents」arXiv:2606.30306（2026/6/29）、Anthropic「Compaction \noverview」（Claude Platform Docs、2026/10/21 確認）を基に作成。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\n1\n毎回ゼロから始める\n前に決めたことを\nまた説明する\n2\n同じ失敗を繰り返す\n前回突き止めた原因を\nまた探す\n3\n長い作業が途切れる\nコンテキストの上限で\n途中経過が落ちる\nすべてを蓄積すると、古い情報や誤りも一緒に戻ってくる。何を残し、何を消すかを設計する。",
+            "distance": 0.2706368565559387,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec03-main-p039",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "実装例：Claude",
+            "page": 39,
+            "content": "実装例：Claude\nClaude の例。1つのセッションの中で効くものと、セッションをまたいで効くものがある\n出典）Anthropic「Compaction overview」「Memory tool」（Claude Platform Docs）、「How Claude remembers your project」（Claude Code Docs）、いずれも 2026/10/21 確認。Packer et al.（2023）\narXiv:2310.08560。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\nコンテキストの中（同じセッション）\nコンパクション（履歴を要約して詰める）\n古い履歴を、要約に置き換える。\n外の保存先（セッションをまたぐ）\nメモリツール（Claude API）\n/memories のファイルを、モデルが要求し\nアプリが自分の保存先で実行する\n自動メモリ（Claude Code）\nClaude が自分でメモを書き、\n毎回先頭200行か25KBまで読む\n書き出す\n必要に応じて\nエージェントが読み戻\nす\n書いたメモリは次回のコンテキストに入る。中身を人が確かめる。 外から書き込まれる危険もある。",
+            "distance": 0.2724219262599945,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec03-main-p040",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "実装例：OpenClaw",
+            "page": 40,
+            "content": "実装例：OpenClaw\n毎晩過去のやり取りを読み直し、残すものだけを長期メモリに移す。\n出典）OpenClaw Docs「Memory overview」「Memory architecture」。2026/10 時点。各段階の説明は要約。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\n日々のメモ（memory/日付.md）\n10/24 のメモ 10/25 のメモ 10/26 のメモ\n毎晩、自動で\n見直し（dreaming）\n1 集める：重複を除いて、候補を並べる\n2 見比べる：何度も出てくるテーマを探す\n3 移す：基準を超えたものだけ残す\nMEMORY.md（長期メモリ） 次の会話の最初に読み込む\n人が手で整理しなくていい\n全部は残さない\n一度きりの調べものは、日々のメモに残るだけ。長期メ\nモリが膨らまない。",
+            "distance": 0.28621184825897217,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec03-main-p013",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 2 エージェントを組み立てる",
+            "title": "メモリ",
+            "page": 13,
+            "content": "メモリ\nコンテキストは有限である。新しいチャットで始めたときに、過去のコンテキストを参照するシステムが欲しい。\n出典）説明用の模式図。保存先（ファイル、データベースなど）と探し方（全件、検索など）は実装により異なる。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\n過去のチャット\n昨日：テストの修正を依頼\n・pytest で実行したい\n・原因は range の範囲だった\n・「コメントは日本語で」と\n言われた\n①\n書き出す\nメモリ（外の保存先）\nテストは pytest で実行する\nrange の境界に注意\nコメントは日本語で書く\n②\n戻す\n新しいコンテキスト\nメモリ：pytest で実行／\nコメントは日本語\nメッセージ：別のテストも\n落ちたので直して\n覚えている ≠ 学習。",
+            "distance": 0.2950877845287323,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec03-main-p064",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：長時間タスクの実行能力の最新動向",
+            "page": 64,
+            "content": "補足：長時間タスクの実行能力の最新動向\nMETR の測定では、公開モデルの最前線の 50% 時間地平は約12時間（2026年2〜3月）。16時間を超える値は、現行の課題群\nでは信頼できない。\n何が変わったか\n項目 更新内容 時点\n50% 時間地平 公開モデルの最前線で約12時間（推定の幅 5〜61時間）。半分の確率で完了できる課\n題の、人間の所要時間で表した長さ\n2026/2〜3 の評価\n80% 時間地平 同じ時点で約1.5時間（推定の幅 50分〜2時間40分）。求める成功率を上げると、任\nせられる長さは大きく縮む\n2026/2〜3 の評価\n測定の限界 GPT-5.6 Sol の推定は約11.3時間。不正な解法を成功に数えると270時間超になり、\nMETR は頑健な測定ではないとした\n2026/6/26\n講義の内容との関係。本編の「1回95%でも20回続くと約36%」は説\n明用の計算。実測でも、50% と 80% の差は大きい。長く動かせるこ\nとと、確実に終えることは別である。\n使うときの注意。時間地平は課題の長さの指標で、連続して稼働でき\nる時間ではない。Claude Opus 5.5 の評価要約（2026/9/22）に、時\n間地平の数値は載っていない。\n出典）METR「Frontier Risk Report (February to March 2026)」（2026/5/19）、「Summary of METR's predeployment evaluation of GPT-5.6 Sol」（2026/6/26）\n、「Task-Completion Time Horizons of Frontier AI Models」（2026/5/8 更新）。情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p065"
+            ]
+          },
+          {
+            "page_id": "lec03-main-p066",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：設定ファイルの標準化（AGENTS.md・Skills）の最新動向",
+            "page": 66,
+            "content": "補足：設定ファイルの標準化（AGENTS.md・Skills）の最新動向\n指示ファイルは AGENTS.md、手順のまとまりは Agent Skills として、ツールをまたぐ共通形式が広がった。\n何が変わったか\n項目 更新内容 時点\nAGENTS.md OpenAI が Linux Foundation 傘下の Agentic AI Foundation に寄贈。6万を超える公\n開プロジェクトが採用\n2025/12/9\nClaude Code の対応 CLAUDE.md がないリポジトリでは、AGENTS.md を指示として直接読む（\nv2.1.277 以降）\n2026/10 時点の文書\nAgent Skills SKILL.md を置いたフォルダの形式。名前と説明だけを先に読み、必要なときに本\n文を読む。Claude API では Skills API がベータを終了\n2026/8/19\n講義の内容との関係。本編「設定ファイルもモデルへの指示になる」\nへの補足。同じ役割のファイルは AGENTS.md として共通化が進み\n、Claude Code も読めるようになった。\n使うときの注意。共通形式になるほど、外で書かれた指示を取り込み\nやすくなる。他者の AGENTS.md や Skill は、境界の内側に入れる前\nに中身を読む。\n出典）Linux Foundation の Agentic AI Foundation 設立発表（2025/12/9）、AGENTS.md・Agent Skills の各公式サイト、Anthropic「Claude Platform release notes\n」（2026/8/19）、「How Claude remembers your project」。情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p065"
+            ]
+          },
+          {
+            "page_id": "lec03-main-p037",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "Part 6 メモリ",
+            "page": 37,
+            "content": "Part 6\nメモリ\n実装例・ Skill\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p038"
+            ]
+          },
+          {
+            "page_id": "lec03-main-p041",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "Skill：繰り返す作業の手順をファイルに保存しておく",
+            "page": 41,
+            "content": "Skill：繰り返す作業の手順をファイルに保存しておく\nメモリは「何があったか」を残す。Skillは「どうやるか」を残す。\n出典）Anthropic「Agent Skills」「Skill authoring best practices」（Claude Platform Docs）。トークン数は目安。例の Skill は説明用の架空例。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\nSkill の中身（例：週報を作る）\nweekly-report/\nSKILL.md ← 手順を書く\ntemplate.docx ← ひな形\nscripts/collect.py ← 集計する\n---\nname: weekly-report\ndescription: 週報を作るときに使う\n---\n1. 今週のチケットを集める\n2. template.docx に沿って書く\n①コンテキストには名前と説明だけを入れる\n1つあたり約100トークン。本文を入れないので、コンテキス\nトを圧迫しない\n② Skillを使う依頼が来たら読み込む\n手順の本文がここで初めてコンテキストに入る。",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p040"
+            ]
+          },
+          {
+            "page_id": "lec03-main-p012",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 2 エージェントを組み立てる",
+            "title": "ループ：ツールの結果を自動的にモデルに入力する",
+            "page": 12,
+            "content": "ループ：ツールの結果を自動的にモデルに入力する\n出典）Willison「tools in a loop」（2025/9/18）、Yao et al.（2022）ReAct を基に作成。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\nモデル\n次の操作を書く\nハーネス\nモデルを動かすプログラム\nツール\nテスト・ファイル・検索\n① 呼び出しを書く ② 実行\n③ 結果をコンテキストに戻す",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p013"
+            ]
+          },
+          {
+            "page_id": "lec03-main-p014",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 2 エージェントを組み立てる",
+            "title": "エージェント＝モデル＋ハーネス",
+            "page": 14,
+            "content": "エージェント＝モデル＋ハーネス\nハーネスはコンテキストを組み立て、ツールを実行するシステム。\n出典）OpenAI “Harness engineering”（2026/2/11）を基に作成。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\nエージェント\nLLMモデル ＋\nハーネス\nコンテキストを組み立てる\n履歴・メモリ・ツール一覧\nツールを実行する\nプログラムを実行し、結果をコンテ\nキストに戻す\n記録を残す\n要点をメモリに書き出す\n権限を確かめ、必要に応じてツ\nールを止める\n危ない操作の承認",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p013"
+            ]
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます！\n\nコンパクションとセッションをまたぐメモリの違い、そして日々のメモの扱いについてですね。資料によると、それぞれ以下のように説明されています。\n\n* **コンパクション**：同じセッション内（コンテキストの中）での古い履歴を、要約して詰める仕組みです。（資料「lec03-main-p039」）\n* **セッションをまたぐメモリ**：外の保存先（ファイルなど）を使い、セッションを超えて情報を保持・読み戻す仕組みです。（資料「lec03-main-p039」）\n\nまた、日々のメモがすべて長期メモリになるのかどうかについては、OpenClawの実装例が参考になります。（資料「lec03-main-p040」）\n日々のメモから長期メモリへ移す際には、どのような手順や基準を踏んでいると書かれているでしょうか？「全部は残さない」ための仕組みについて、資料の図をヒントに考えてみてくださいね。",
+      "seconds": 2.303,
+      "usage": {
+        "input_tokens": 4117,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 212,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 4117
+        },
+        "cost": "0.0017651",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 2.30 秒（検索・埋め込みを含む）\n[usage] 入力 4,117 tokens / 出力 212 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.001765 USD（埋め込み・索引構築分は含まない）\n"
+    },
+    {
+      "id": "memory-baseline",
+      "question": "コンパクションとセッションをまたぐメモリの違いは？ 日々のメモは全部長期メモリになりますか？",
+      "query": "コンパクション セッションをまたぐメモリ 日々のメモ 長期メモリ",
+      "seed_ids": [
+        "lec03-main-p065",
+        "lec03-main-p038",
+        "lec03-main-p039",
+        "lec03-main-p040",
+        "lec03-main-p013"
+      ],
+      "retrieved_ids": [
+        "lec03-main-p065",
+        "lec03-main-p038",
+        "lec03-main-p039",
+        "lec03-main-p040",
+        "lec03-main-p013"
+      ],
+      "page_count": 5,
+      "retrieval_seconds": 0.591,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": false,
+        "results": [
+          {
+            "page_id": "lec03-main-p065",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：メモリと Context Engineering の最新動向",
+            "page": 65,
+            "content": "補足：メモリと Context Engineering の最新動向\n履歴の要約（コンパクション）とファイル型のメモリが、API の機能として提供されるようになった。保存と再注入である\n点は変わらない。\n何が変わったか\n項目 更新内容 時点\n自動のコンパクション サーバー側で履歴を要約する API が、ベータで提供開始 2026/2/5\n任意時点のコンパクショ\nン\n要約する時点を、アプリケーションが決められる。要約に置き換えた範囲の画像や\n文書は失われる\n2026/9/14 ベータ\nメモリツール モデルがファイル操作を要求し、アプリケーションが自分の保存先で実行する。ベ\nータ指定が不要に\n2026/2/17\n講義の内容との関係。本編の3つの範囲のうち、「ループの中の履歴\n」の圧縮がコンパクション、「セッションをまたぐ記録」がメモリツ\nールに当たる。重みは変わらない。\n使うときの注意。保存先の管理はアプリケーションの責任。文書は保\n存先の外を指すパスを検証するよう求めている。要約で落ちた途中の\n指示は、以後は効かない。\n出典）Anthropic「Claude Platform release notes」（2026/2/5、2/17、9/14）、「Memory tool」、任意時点のコンパクションの文書（後の2つは日付記載なし）。\n情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "distance": 0.26724541187286377
+          },
+          {
+            "page_id": "lec03-main-p038",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "メモリがないと、毎回ゼロからやり直しになる",
+            "page": 38,
+            "content": "メモリがないと、毎回ゼロからやり直しになる\n「失敗しているテストを直して」を翌日また頼んだら、前回見つけた原因は使えるでしょうか？\n出典）Luo et al.「From Storage to Experience」arXiv:2605.06716（2026/5/7、ACL 2026 Findings）の§1・§3.2、Ding et al.「Always-On Agents」arXiv:2606.30306（2026/6/29）、Anthropic「Compaction \noverview」（Claude Platform Docs、2026/10/21 確認）を基に作成。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\n1\n毎回ゼロから始める\n前に決めたことを\nまた説明する\n2\n同じ失敗を繰り返す\n前回突き止めた原因を\nまた探す\n3\n長い作業が途切れる\nコンテキストの上限で\n途中経過が落ちる\nすべてを蓄積すると、古い情報や誤りも一緒に戻ってくる。何を残し、何を消すかを設計する。",
+            "distance": 0.2706368565559387
+          },
+          {
+            "page_id": "lec03-main-p039",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "実装例：Claude",
+            "page": 39,
+            "content": "実装例：Claude\nClaude の例。1つのセッションの中で効くものと、セッションをまたいで効くものがある\n出典）Anthropic「Compaction overview」「Memory tool」（Claude Platform Docs）、「How Claude remembers your project」（Claude Code Docs）、いずれも 2026/10/21 確認。Packer et al.（2023）\narXiv:2310.08560。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\nコンテキストの中（同じセッション）\nコンパクション（履歴を要約して詰める）\n古い履歴を、要約に置き換える。\n外の保存先（セッションをまたぐ）\nメモリツール（Claude API）\n/memories のファイルを、モデルが要求し\nアプリが自分の保存先で実行する\n自動メモリ（Claude Code）\nClaude が自分でメモを書き、\n毎回先頭200行か25KBまで読む\n書き出す\n必要に応じて\nエージェントが読み戻\nす\n書いたメモリは次回のコンテキストに入る。中身を人が確かめる。 外から書き込まれる危険もある。",
+            "distance": 0.2724219262599945
+          },
+          {
+            "page_id": "lec03-main-p040",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 6 メモリ",
+            "title": "実装例：OpenClaw",
+            "page": 40,
+            "content": "実装例：OpenClaw\n毎晩過去のやり取りを読み直し、残すものだけを長期メモリに移す。\n出典）OpenClaw Docs「Memory overview」「Memory architecture」。2026/10 時点。各段階の説明は要約。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\n日々のメモ（memory/日付.md）\n10/24 のメモ 10/25 のメモ 10/26 のメモ\n毎晩、自動で\n見直し（dreaming）\n1 集める：重複を除いて、候補を並べる\n2 見比べる：何度も出てくるテーマを探す\n3 移す：基準を超えたものだけ残す\nMEMORY.md（長期メモリ） 次の会話の最初に読み込む\n人が手で整理しなくていい\n全部は残さない\n一度きりの調べものは、日々のメモに残るだけ。長期メ\nモリが膨らまない。",
+            "distance": 0.28621184825897217
+          },
+          {
+            "page_id": "lec03-main-p013",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Part 2 エージェントを組み立てる",
+            "title": "メモリ",
+            "page": 13,
+            "content": "メモリ\nコンテキストは有限である。新しいチャットで始めたときに、過去のコンテキストを参照するシステムが欲しい。\n出典）説明用の模式図。保存先（ファイル、データベースなど）と探し方（全件、検索など）は実装により異なる。\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO\n過去のチャット\n昨日：テストの修正を依頼\n・pytest で実行したい\n・原因は range の範囲だった\n・「コメントは日本語で」と\n言われた\n①\n書き出す\nメモリ（外の保存先）\nテストは pytest で実行する\nrange の境界に注意\nコメントは日本語で書く\n②\n戻す\n新しいコンテキスト\nメモリ：pytest で実行／\nコメントは日本語\nメッセージ：別のテストも\n落ちたので直して\n覚えている ≠ 学習。",
+            "distance": 0.2950877845287323
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます！資料をもとにそれぞれの違いや仕組みについて解説しますね。\n\n### 1. コンパクションとセッションをまたぐメモリの違い\n* **コンパクション（履歴の要約）**\n  * **どこで動くか：** 同じセッション（コンテキストの中）のループにある履歴を対象とします。\n  * **何をするか：** 古い履歴をサーバー側などで要約に置き換えることで、コンテキストの容量を圧迫しないように詰める仕組みです。（資料：講義資料 lec03-main p.39、p.65）\n* **セッションをまたぐメモリ（メモリツールなど）**\n  * **どこで動くか：** セッションをまたいで外の保存先（ファイルなど）に保存・読み込みを行います。\n  * **何をするか：** 過去のやり取りや重要な記録をファイル等に書き出し、別の新しいセッションが始まったときにもその情報を再び読み込めるようにします。（資料：講義資料 lec03-main p.13、p.39）\n\n---\n\n### 2. 日々のメモは全部長期メモリになりますか？\n日々のメモがすべてそのまま長期メモリに移されるわけではありません。\nOpenClawの実装例を見てみると、毎晩の「見直し（dreaming）」のプロセスにおいて、以下のようなフィルタリングが行われています。\n* 重複を除いて候補を並べる\n* 何度も出てくるテーマを探す\n* **基準を超えたものだけ**を残す\n\nそのため、一度きりの調べものなどは日々のメモに残るだけで、長期メモリが膨らまないような仕組みになっています。（資料：講義資料 lec03-main p.40）\n\n---\n宿題を進める際は、「情報をすべて残すのではなく、何を残し何を消すべきか」「どのタイミングで整理・圧縮すべきか」という設計の視点を意識してみてくださいね！",
+      "seconds": 2.855,
+      "usage": {
+        "input_tokens": 1964,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 414,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 1964
+        },
+        "cost": "0.0016242",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 2.86 秒（検索・埋め込みを含む）\n[usage] 入力 1,964 tokens / 出力 414 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.001624 USD（埋め込み・索引構築分は含まない）\n"
+    },
+    {
+      "id": "absent-baseline",
+      "question": "今回作ったRAGの実測平均応答時間と正答率は、それぞれいくつですか？",
+      "query": "今回作ったRAG 実測平均応答時間 正答率",
+      "seed_ids": [
+        "lec02-main-p013",
+        "lec03-main-p064",
+        "lec02-main-p024",
+        "lec01-main-p019",
+        "lec02-main-p003"
+      ],
+      "retrieved_ids": [
+        "lec02-main-p013",
+        "lec03-main-p064",
+        "lec02-main-p024",
+        "lec01-main-p019",
+        "lec02-main-p003"
+      ],
+      "page_count": 5,
+      "retrieval_seconds": 0.519,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": false,
+        "results": [
+          {
+            "page_id": "lec02-main-p013",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "LLM は、確率で次の言葉を選ぶ",
+            "title": "帰結①：同じ質問でも、答えは毎回変わる",
+            "page": 13,
+            "content": "1/4 　 LLM は確率で次の言葉を選ぶ\n帰結①：同じ質問でも、答えは毎回変わる\n1 回試して「動いた」は評価にならない。同じ質問を複数回聞いて、ばらつきごと測る\n例：「 RAG って何ですか？」を 5 回聞く（説明用）　右端：✓正しい 誤り ！不十分✗\n1 質問に関係する資料を検索し、それを根拠に回答を作る方法です\n2\n外部の文書を検索して、 LLM への入力に加えてから答えさせる\n仕組みです\n3 検索（ Retrieval ）で知識を補いながら文章を生成する手法です\n4 モデルを追加学習して、新しい知識を覚えさせる方法です\n5 検索した資料を要約して表示する機能です\n5 回中\n3 回 正しい\n• 1 回目だけ見れば「完璧」でも、実際の\n正答率は分からない\n• 評価は同じ質問を複数回。平均とばらつきを\n見る（第 4 回）\n• 温度を下げる・根拠資料を渡すなどで、\n揺れは減らせる\n© Matsuo-Iwasawa Lab, The University of Tokyo 13",
+            "distance": 0.26633670926094055
+          },
+          {
+            "page_id": "lec03-main-p064",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：長時間タスクの実行能力の最新動向",
+            "page": 64,
+            "content": "補足：長時間タスクの実行能力の最新動向\nMETR の測定では、公開モデルの最前線の 50% 時間地平は約12時間（2026年2〜3月）。16時間を超える値は、現行の課題群\nでは信頼できない。\n何が変わったか\n項目 更新内容 時点\n50% 時間地平 公開モデルの最前線で約12時間（推定の幅 5〜61時間）。半分の確率で完了できる課\n題の、人間の所要時間で表した長さ\n2026/2〜3 の評価\n80% 時間地平 同じ時点で約1.5時間（推定の幅 50分〜2時間40分）。求める成功率を上げると、任\nせられる長さは大きく縮む\n2026/2〜3 の評価\n測定の限界 GPT-5.6 Sol の推定は約11.3時間。不正な解法を成功に数えると270時間超になり、\nMETR は頑健な測定ではないとした\n2026/6/26\n講義の内容との関係。本編の「1回95%でも20回続くと約36%」は説\n明用の計算。実測でも、50% と 80% の差は大きい。長く動かせるこ\nとと、確実に終えることは別である。\n使うときの注意。時間地平は課題の長さの指標で、連続して稼働でき\nる時間ではない。Claude Opus 5.5 の評価要約（2026/9/22）に、時\n間地平の数値は載っていない。\n出典）METR「Frontier Risk Report (February to March 2026)」（2026/5/19）、「Summary of METR's predeployment evaluation of GPT-5.6 Sol」（2026/6/26）\n、「Task-Completion Time Horizons of Frontier AI Models」（2026/5/8 更新）。情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "distance": 0.2963509261608124
+          },
+          {
+            "page_id": "lec02-main-p024",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "渡す・選ぶ／直す／考えさせる",
+            "title": "事後学習の前と後：同じ質問でも、ふるまいが変わる",
+            "page": 24,
+            "content": "2/4 　渡す・選ぶ／直す／考えさせる\n事後学習の前と後：同じ質問でも、ふるまいが変わる\n事前学習だけのモデルは「文章の続き」を書く。事後学習で「質問に答える」ようになる\n出典：図： L. Ouyang et al. 「 Training language models to follow instructions with human feedback （ InstructGPT ）」 NeurIPS 2022 Fig.2 。左の例は説明用\n考えてみよう：事前学習だけのモデルは、何を返す？（説明用の例）\n入力： RAG って何ですか？\n事前学習だけのモデル\nRAG って何ですか？　 RAG と LLM の違いは？　 RAG の\n実装方法は？……\n→ よくある質問集の「続き」を書いてしまう\n事後学習の後\nRAG とは、質問に関係する資料を検索し、それを根拠に回答を\n作る方法です。\nInstructGPT の 3 段階：手本 → 人の順位付け → 強化学習\n人の好み評価で、 13 億パラメータの InstructGPT が\n1750 億パラメータの GPT-3 より好まれた\n知識が増えたのではなく「答え方」の差 → 直す価値がある\n© Matsuo-Iwasawa Lab, The University of Tokyo 24\n\n【図表・画像内の補足文字起こし】\nInstructGPT図の工程：Step 1 Collect demonstration data, and train a supervised policy. Step 2 Collect comparison data, and train a reward model. Step 3 Optimize a policy against the reward model using reinforcement learning.",
+            "distance": 0.3009398281574249
+          },
+          {
+            "page_id": "lec01-main-p019",
+            "document_id": "lec01-main",
+            "lecture": 1,
+            "document_title": "AIエンジニアリング概論とAIコーディング",
+            "section": "なぜ今 AIエンジニアリングなのか",
+            "title": "研究室の実例：大規模講義の質問に答えるチャットボット",
+            "page": 19,
+            "content": "なぜ今 ②　 AI を使うエコシステムの充実\n研究室の実例：大規模講義の質問に答えるチャットボット\n講義資料を検索して回答し、根拠も示す（ RAG ：資料を検索して回答に使う手法）\n1 万件 +\n講義期間中の回答数\n• 当時学部 2 年の学生が中心\n• 最終課題のお題例にも\n© Matsuo-Iwasawa Lab, The University of Tokyo 19\n\n【図表・画像内の補足文字起こし】\n画面内：Omnicampus／QA／User（受講生）からの質問／LLMからの回答／回答のソース／フィードバック。\n質問：RAGについて教えてください。\nRAGで取得した文書一覧：[2406.05608] The Prompt Report: A Systematic Survey of Prompting Techniques／A Survey of Large Language Models in Finance (FinLLMs)／Benchmarking Retrieval-Augmented Generation for Medicine／A Human-Inspired Reading Agent with Gist Memory of Very Long Contexts／RAGGED: Towards Informed Design of Retrieval Augmented Generation Systems。\n使用した参考文献：GPT4oの知識をもとに回答しています。\n解決しましたか？ ※フィードバックを返すと受講者側はこのセッションでは追加の質問ができません。\nRAG (Retrieval-Augmented Generation) は、関連する文書や情報を取得し、その情報に基づいて言語モデルが応答を生成する手法です。この方法は、外部の知識を取り入れることで生成されるテキストの質と関連性を向上させるために使用されます。RAGは、テキスト、画像、ビデオなどさまざまなコンテキストで適用可能であり、文脈に即した正確な出力を生成するための多用途なツールです。このプロセスは通常、関連する文書を検索し、それらを入力クエリと組み合わせてから、言語モデルを使用して応答を生成することを含みます。このアプローチは、言語モデルのトレーニングデータを超えた外部知識を必要とする複雑なクエリに対処する際に特に有用です。RAGは、外部のデータベースや知識源にアクセスし利用することで、言語モデルの能力を強化する方法と見なされています。[0]",
+            "distance": 0.30335214734077454
+          },
+          {
+            "page_id": "lec02-main-p003",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "冒頭",
+            "title": "チャットボットを作ると、すぐにこんな「厄介さ」に出会う",
+            "page": 3,
+            "content": "今日の問い\nチャットボットを作ると、すぐにこんな「厄介さ」に出会う\nこれらは偶然ではなく、基盤モデルの仕組みから来ている\n同じ質問なのに、答えが毎回違う\n「 RAG って何？」と 5 回聞くと、 5 通りの\n答え\n自信満々に、間違ったことを言う\n存在しない「第 14 回の課題」について、\nそれらしく説明する\n長い資料を渡すと、途中を見落と\nす\n講義資料を全部渡したのに、真ん中の\nスライドの内容を答えられない\n今日のゴール\nモデル単体の限界を仕組みから説明でき、困りごとに応じて「渡す・選ぶ／直す／考えさせる」を選び、効果を\n測れるようになる\n© Matsuo-Iwasawa Lab, The University of Tokyo 3",
+            "distance": 0.30366334319114685
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます。\n\nご提示いただいた資料を確認いたしましたが、今回作成したRAGの実測平均応答時間と正答率に関する数値の記載はございませんでした。そのため、提供された資料からは確認できません。\n\nもしこれらの値について考えるヒントが必要な場合は、資料「基盤モデルの仕組み」（講義2）のページ13（資料名：`lec02-main`、PDF 13ページ）を参考にしてみてください。LLMの評価を行う際になぜ複数回質問してばらつきを見る必要があるのか、その理由や考え方が記載されています。あわせて確認してみましょう。",
+      "seconds": 2.781,
+      "usage": {
+        "input_tokens": 2526,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 127,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 2526
+        },
+        "cost": "0.0010753",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 2.78 秒（検索・埋め込みを含む）\n[usage] 入力 2,526 tokens / 出力 127 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.001075 USD（埋め込み・索引構築分は含まない）\n"
+    },
+    {
+      "id": "absent-neighbors",
+      "question": "今回作ったRAGの実測平均応答時間と正答率は、それぞれいくつですか？",
+      "query": "今回作ったRAG 実測平均応答時間 正答率",
+      "seed_ids": [
+        "lec02-main-p013",
+        "lec03-main-p064",
+        "lec02-main-p024",
+        "lec01-main-p019",
+        "lec02-main-p003"
+      ],
+      "retrieved_ids": [
+        "lec02-main-p013",
+        "lec03-main-p064",
+        "lec02-main-p024",
+        "lec01-main-p019",
+        "lec02-main-p003",
+        "lec02-main-p012",
+        "lec02-main-p014",
+        "lec03-main-p063",
+        "lec03-main-p065",
+        "lec02-main-p023",
+        "lec02-main-p025",
+        "lec01-main-p018",
+        "lec01-main-p020",
+        "lec02-main-p002",
+        "lec02-main-p004"
+      ],
+      "page_count": 15,
+      "retrieval_seconds": 0.481,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": true,
+        "results": [
+          {
+            "page_id": "lec02-main-p013",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "LLM は、確率で次の言葉を選ぶ",
+            "title": "帰結①：同じ質問でも、答えは毎回変わる",
+            "page": 13,
+            "content": "1/4 　 LLM は確率で次の言葉を選ぶ\n帰結①：同じ質問でも、答えは毎回変わる\n1 回試して「動いた」は評価にならない。同じ質問を複数回聞いて、ばらつきごと測る\n例：「 RAG って何ですか？」を 5 回聞く（説明用）　右端：✓正しい 誤り ！不十分✗\n1 質問に関係する資料を検索し、それを根拠に回答を作る方法です\n2\n外部の文書を検索して、 LLM への入力に加えてから答えさせる\n仕組みです\n3 検索（ Retrieval ）で知識を補いながら文章を生成する手法です\n4 モデルを追加学習して、新しい知識を覚えさせる方法です\n5 検索した資料を要約して表示する機能です\n5 回中\n3 回 正しい\n• 1 回目だけ見れば「完璧」でも、実際の\n正答率は分からない\n• 評価は同じ質問を複数回。平均とばらつきを\n見る（第 4 回）\n• 温度を下げる・根拠資料を渡すなどで、\n揺れは減らせる\n© Matsuo-Iwasawa Lab, The University of Tokyo 13",
+            "distance": 0.26633670926094055,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec03-main-p064",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：長時間タスクの実行能力の最新動向",
+            "page": 64,
+            "content": "補足：長時間タスクの実行能力の最新動向\nMETR の測定では、公開モデルの最前線の 50% 時間地平は約12時間（2026年2〜3月）。16時間を超える値は、現行の課題群\nでは信頼できない。\n何が変わったか\n項目 更新内容 時点\n50% 時間地平 公開モデルの最前線で約12時間（推定の幅 5〜61時間）。半分の確率で完了できる課\n題の、人間の所要時間で表した長さ\n2026/2〜3 の評価\n80% 時間地平 同じ時点で約1.5時間（推定の幅 50分〜2時間40分）。求める成功率を上げると、任\nせられる長さは大きく縮む\n2026/2〜3 の評価\n測定の限界 GPT-5.6 Sol の推定は約11.3時間。不正な解法を成功に数えると270時間超になり、\nMETR は頑健な測定ではないとした\n2026/6/26\n講義の内容との関係。本編の「1回95%でも20回続くと約36%」は説\n明用の計算。実測でも、50% と 80% の差は大きい。長く動かせるこ\nとと、確実に終えることは別である。\n使うときの注意。時間地平は課題の長さの指標で、連続して稼働でき\nる時間ではない。Claude Opus 5.5 の評価要約（2026/9/22）に、時\n間地平の数値は載っていない。\n出典）METR「Frontier Risk Report (February to March 2026)」（2026/5/19）、「Summary of METR's predeployment evaluation of GPT-5.6 Sol」（2026/6/26）\n、「Task-Completion Time Horizons of Frontier AI Models」（2026/5/8 更新）。情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "distance": 0.2963509261608124,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p024",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "渡す・選ぶ／直す／考えさせる",
+            "title": "事後学習の前と後：同じ質問でも、ふるまいが変わる",
+            "page": 24,
+            "content": "2/4 　渡す・選ぶ／直す／考えさせる\n事後学習の前と後：同じ質問でも、ふるまいが変わる\n事前学習だけのモデルは「文章の続き」を書く。事後学習で「質問に答える」ようになる\n出典：図： L. Ouyang et al. 「 Training language models to follow instructions with human feedback （ InstructGPT ）」 NeurIPS 2022 Fig.2 。左の例は説明用\n考えてみよう：事前学習だけのモデルは、何を返す？（説明用の例）\n入力： RAG って何ですか？\n事前学習だけのモデル\nRAG って何ですか？　 RAG と LLM の違いは？　 RAG の\n実装方法は？……\n→ よくある質問集の「続き」を書いてしまう\n事後学習の後\nRAG とは、質問に関係する資料を検索し、それを根拠に回答を\n作る方法です。\nInstructGPT の 3 段階：手本 → 人の順位付け → 強化学習\n人の好み評価で、 13 億パラメータの InstructGPT が\n1750 億パラメータの GPT-3 より好まれた\n知識が増えたのではなく「答え方」の差 → 直す価値がある\n© Matsuo-Iwasawa Lab, The University of Tokyo 24\n\n【図表・画像内の補足文字起こし】\nInstructGPT図の工程：Step 1 Collect demonstration data, and train a supervised policy. Step 2 Collect comparison data, and train a reward model. Step 3 Optimize a policy against the reward model using reinforcement learning.",
+            "distance": 0.3009398281574249,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec01-main-p019",
+            "document_id": "lec01-main",
+            "lecture": 1,
+            "document_title": "AIエンジニアリング概論とAIコーディング",
+            "section": "なぜ今 AIエンジニアリングなのか",
+            "title": "研究室の実例：大規模講義の質問に答えるチャットボット",
+            "page": 19,
+            "content": "なぜ今 ②　 AI を使うエコシステムの充実\n研究室の実例：大規模講義の質問に答えるチャットボット\n講義資料を検索して回答し、根拠も示す（ RAG ：資料を検索して回答に使う手法）\n1 万件 +\n講義期間中の回答数\n• 当時学部 2 年の学生が中心\n• 最終課題のお題例にも\n© Matsuo-Iwasawa Lab, The University of Tokyo 19\n\n【図表・画像内の補足文字起こし】\n画面内：Omnicampus／QA／User（受講生）からの質問／LLMからの回答／回答のソース／フィードバック。\n質問：RAGについて教えてください。\nRAGで取得した文書一覧：[2406.05608] The Prompt Report: A Systematic Survey of Prompting Techniques／A Survey of Large Language Models in Finance (FinLLMs)／Benchmarking Retrieval-Augmented Generation for Medicine／A Human-Inspired Reading Agent with Gist Memory of Very Long Contexts／RAGGED: Towards Informed Design of Retrieval Augmented Generation Systems。\n使用した参考文献：GPT4oの知識をもとに回答しています。\n解決しましたか？ ※フィードバックを返すと受講者側はこのセッションでは追加の質問ができません。\nRAG (Retrieval-Augmented Generation) は、関連する文書や情報を取得し、その情報に基づいて言語モデルが応答を生成する手法です。この方法は、外部の知識を取り入れることで生成されるテキストの質と関連性を向上させるために使用されます。RAGは、テキスト、画像、ビデオなどさまざまなコンテキストで適用可能であり、文脈に即した正確な出力を生成するための多用途なツールです。このプロセスは通常、関連する文書を検索し、それらを入力クエリと組み合わせてから、言語モデルを使用して応答を生成することを含みます。このアプローチは、言語モデルのトレーニングデータを超えた外部知識を必要とする複雑なクエリに対処する際に特に有用です。RAGは、外部のデータベースや知識源にアクセスし利用することで、言語モデルの能力を強化する方法と見なされています。[0]",
+            "distance": 0.30335214734077454,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p003",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "冒頭",
+            "title": "チャットボットを作ると、すぐにこんな「厄介さ」に出会う",
+            "page": 3,
+            "content": "今日の問い\nチャットボットを作ると、すぐにこんな「厄介さ」に出会う\nこれらは偶然ではなく、基盤モデルの仕組みから来ている\n同じ質問なのに、答えが毎回違う\n「 RAG って何？」と 5 回聞くと、 5 通りの\n答え\n自信満々に、間違ったことを言う\n存在しない「第 14 回の課題」について、\nそれらしく説明する\n長い資料を渡すと、途中を見落と\nす\n講義資料を全部渡したのに、真ん中の\nスライドの内容を答えられない\n今日のゴール\nモデル単体の限界を仕組みから説明でき、困りごとに応じて「渡す・選ぶ／直す／考えさせる」を選び、効果を\n測れるようになる\n© Matsuo-Iwasawa Lab, The University of Tokyo 3",
+            "distance": 0.30366334319114685,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p012",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "LLM は、確率で次の言葉を選ぶ",
+            "title": "サンプリング：確率からどう選ぶかで、答えの性格が変わる",
+            "page": 12,
+            "content": "1/4 　 LLM は確率で次の言葉を選ぶ\nサンプリング：確率からどう選ぶかで、答えの性格が変わる\n温度（ temperature ）を下げると無難に、上げると多様になる。 0 にしても完全に一定とは限らない\n出典：確率の値は説明用の例\n温度が低い（例： 0.2 ）\n検索 86%\n探し 12%\n集め 2%\nほぼ毎回「検索」。安定するが単調\n温度が高い（例： 1.2 ）\n検索 38%\n探し 30%\n集め 19%\n選ばれ方が散らばる。多様だが外れも増える\n事前宿題で温度を変えたときの揺れは、これ。\nチャットボットなら、事実を答える用途は低め、アイデア出しは高め。効果は測って確かめる\n© Matsuo-Iwasawa Lab, The University of Tokyo 12",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p013"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p014",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "LLM は、確率で次の言葉を選ぶ",
+            "title": "帰結②：知らないことも、それらしく答えてしまう",
+            "page": 14,
+            "content": "1/4 　 LLM は確率で次の言葉を選ぶ\n帰結②：知らないことも、それらしく答えてしまう\n確率的に「ありそうな文章」を作るので、知識がない質問にも流暢な誤り（ハルシネーション）が出る\n例（説明用）\n受講生：第 14 回の課題の締切はいつですか？\nチャットボット：第 14 回の課題は「最終発表スライド」で、\n締切は 12 月 20 日（日） 23:59 です。\n実際には第 14 回は存在しない（全 13 回）。それでも、講義の\nシラバスに「ありそうな」答えが生成される\nなぜ起きるか、どう付き合うか\n仕組み\n「知らない」より「ありそうな答え」の確率が高くなりやすい\n対策：根拠を渡す\n講義資料を検索して渡す（ RAG 、第 5 回）。根拠も一緒に\n示させる\n対策：測る\n答えられない質問を評価セットに入れ、「分かりません」と\n言えるかを測る\n© Matsuo-Iwasawa Lab, The University of Tokyo 14",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p013"
+            ]
+          },
+          {
+            "page_id": "lec03-main-p063",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：ツール呼び出しの最新動向",
+            "page": 63,
+            "content": "補足：ツール呼び出しの最新動向\nツール定義を必要なときだけ読み込む機能と、コードからまとめてツールを呼ぶ機能が、Claude API でベータ指定なしに使\nえるようになった。\n何が変わったか\n項目 更新内容 時点\nツール検索 定義の読み込みを後回しにし、モデルが検索して必要な分だけ入力に入れる。文書\nの例では、約5.5万トークンの定義が85%超減る\n2026/2/17\nコード経由の呼び出し モデルが書いたコードがツールを続けて呼び、最終の出力だけが入力に戻る。検索\n系の評価で、入力トークンが24%減\n2026/2/17\nOpenAI API 定義の後回し（defer_loading）と tool_search に対応。gpt-5.4 以降のモデルが対象 2026/10 時点の文書\n講義の内容との関係。本編では、使えるツールの一覧をコンテキストに入れた。\nツールが多いと一覧だけでコンテキストを使うため、必要なときだけ読み込む。\n文書は、30〜50個を超えるとツール選択の精度が下がるとしている。\n使うときの注意。1つずつ順に呼ぶ作業では効果がなく、費用が約8%\n増えた評価もある。呼び出し元の指定は安全上の境界ではないと明記\nされている。権限はハーネスで確かめる。\n出典）Anthropic「Tool search tool」「Programmatic tool calling」「Claude Platform release notes」（2026/2/17）、OpenAI「Function calling」（日付記載なし）\n。情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p064"
+            ]
+          },
+          {
+            "page_id": "lec03-main-p065",
+            "document_id": "lec03-main",
+            "lecture": 3,
+            "document_title": "AIエージェント",
+            "section": "Appendix",
+            "title": "補足：メモリと Context Engineering の最新動向",
+            "page": 65,
+            "content": "補足：メモリと Context Engineering の最新動向\n履歴の要約（コンパクション）とファイル型のメモリが、API の機能として提供されるようになった。保存と再注入である\n点は変わらない。\n何が変わったか\n項目 更新内容 時点\n自動のコンパクション サーバー側で履歴を要約する API が、ベータで提供開始 2026/2/5\n任意時点のコンパクショ\nン\n要約する時点を、アプリケーションが決められる。要約に置き換えた範囲の画像や\n文書は失われる\n2026/9/14 ベータ\nメモリツール モデルがファイル操作を要求し、アプリケーションが自分の保存先で実行する。ベ\nータ指定が不要に\n2026/2/17\n講義の内容との関係。本編の3つの範囲のうち、「ループの中の履歴\n」の圧縮がコンパクション、「セッションをまたぐ記録」がメモリツ\nールに当たる。重みは変わらない。\n使うときの注意。保存先の管理はアプリケーションの責任。文書は保\n存先の外を指すパスを検証するよう求めている。要約で落ちた途中の\n指示は、以後は効かない。\n出典）Anthropic「Claude Platform release notes」（2026/2/5、2/17、9/14）、「Memory tool」、任意時点のコンパクションの文書（後の2つは日付記載なし）。\n情報確認日：2026/10/9\n©MATSUO-IWASAWA LAB, THE UNIVERSITY OF TOKYO",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec03-main-p064"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p023",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "渡す・選ぶ／直す／考えさせる",
+            "title": "事後学習：答え方はここで決まる。だから「直す」ことができる",
+            "page": 23,
+            "content": "2/4 　渡す・選ぶ／直す／考えさせる\n事後学習：答え方はここで決まる。だから「直す」ことができる\n事前学習済みモデルに、手本や評価で答え方を学ばせる。この小規模版を自分たちで行うのが Fine-Tuning\n出典：岩澤（ 2026 ）日本物流学会講演資料を基に、例を講義チャットボットに置き換えて作成\n手本から学ぶ\nSFT\n質問と模範解答の組を見せて、答え方を\nまねさせる\n例：「質問→根拠付きの丁寧な回答」の\n手本を数千件\n人の好みから学ぶ\nRLHF\n2 つの回答のどちらが良いかを人が選び、\nその傾向を学ぶ\n例：分かりやすい説明の方を選ぶ\n自動の採点から学ぶ\nRLVR\n正解かどうかを機械で判定できる課題で、\n正解を増やす\n例：計算問題の答えや、コードの\nテスト結果で採点\nチャットボットなら：手本で「根拠付きで丁寧に答える」型を覚えさせ、人の好みで分かりやすさを磨く。これを自分たちで小さく\n行うのが Fine-Tuning （塊 4 ）\n© Matsuo-Iwasawa Lab, The University of Tokyo 23",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p024"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p025",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "渡す・選ぶ／直す／考えさせる",
+            "title": "推論時計算：使うときに「考えさせる」と、難問に強くなる",
+            "page": 25,
+            "content": "2/4 　渡す・選ぶ／直す／考えさせる\n推論時計算：使うときに「考えさせる」と、難問に強くなる\n途中の考えを書かせる（ CoT ： Chain of Thought ）、候補を複数作って選ぶ。モデルを変えずに賢さを買える\n出典： Wei+ 「 Chain-of-Thought Prompting 」 NeurIPS 2022 Fig.1 ／ OpenAI 「 Learning to reason with LLMs 」 2024 。 o1 ＝ OpenAI の推論モデル\n考えを書かせる（ CoT ）：左は答えだけ→誤り、右は途中式を書く→正解\n候補を作って選ぶ：同じ o1 の正答率（数学競技 AIME ）\n※93% は 1,000 候補を採点器で選んだ研究用の設定。計算量は約 1,000 倍\n1 回で答える 74%\n1,000 候補から選ぶ 93%\nAPI では「考える量」を選べる\nbudget_tokens＝考える量の上限（書き方は API・時\n期で異なる）\nmsg = client.messages.create(\n    model=\"claude-...\",\n    max_tokens=16000,\n    thinking={\"type\": \"enabled\",\n              \"budget_tokens\": 8000},\n    messages=[...])\n• 難しい質問だけ考える量を増やす、と使い分ける\n• その代わり、料金（出力トークン）と待ち時間が増える\n• 演習で使う小さな公開モデルには、この設定はない\n© Matsuo-Iwasawa Lab, The University of Tokyo 25\n\n【図表・画像内の補足文字起こし】\nStandard Prompting / Chain-of-Thought Prompting\nQ: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?\nStandard A: The answer is 11.\nCoT A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11. The answer is 11.\nQ: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?\nStandard A: The answer is 27. [図では不正解の印]\nCoT A: The cafeteria had 23 apples originally. They used 20 to make lunch. So they had 23 - 20 = 3. They bought 6 more apples, so they have 3 + 6 = 9. The answer is 9.",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p024"
+            ]
+          },
+          {
+            "page_id": "lec01-main-p018",
+            "document_id": "lec01-main",
+            "lecture": 1,
+            "document_title": "AIエンジニアリング概論とAIコーディング",
+            "section": "なぜ今 AIエンジニアリングなのか",
+            "title": "研究室の実例： LLM でロボットを動かす",
+            "page": 18,
+            "content": "なぜ今 ②　 AI を使うエコシステムの充実\n研究室の実例： LLM でロボットを動かす\n言葉の指示を、 LLM （大規模言語モデル）がロボットの行動の列に変換して実行する\n優勝\nRoboCup Japan Open 2023\n世界大会でも 3 位\n学部生が中心のチーム\n© Matsuo-Iwasawa Lab, The University of Tokyo 18\n\n【図表・画像内の補足文字起こし】\nTask: bring me a noodle from the long table\nGet command → go('long table', '') → find_object('noodle', 'long table') → grab('noodle', '') → go('start point', '') → find_person('operator', 'start point') → hand_over('noodle', 'operator') → Task completed",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec01-main-p019"
+            ]
+          },
+          {
+            "page_id": "lec01-main-p020",
+            "document_id": "lec01-main",
+            "lecture": 1,
+            "document_title": "AIエンジニアリング概論とAIコーディング",
+            "section": "なぜ今 AIエンジニアリングなのか",
+            "title": "どちらのプロジェクトも、学部生が大活躍している",
+            "page": 20,
+            "content": "なぜ今 ②　 AI を使うエコシステムの充実\nどちらのプロジェクトも、学部生が大活躍している\nロボカップ優勝メンバー\n学部生中心のチームで国内大会優勝\nチャットボット開発\n当時学部 2 年のベルトンさんが開発の中心メンバー\n© Matsuo-Iwasawa Lab, The University of Tokyo 20",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec01-main-p019"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p002",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "冒頭",
+            "title": "今日は「 [3] モデル学習」の中身、基盤モデルそのものを扱う",
+            "page": 2,
+            "content": "前回の振り返り\n今日は「 [3] モデル学習」の中身、基盤モデルそのものを扱う\n思い出してみよう： AI エンジニアリングの 5 つの工程は？ 今日扱うのはどれ？（答えは下の図）\n問題設定\n• 入力と出力を決める\n• 評価方法を決める\n• 実現性・価値を\n見積もる\n本講座 第 4 回\nデータ収集\n• 学習・評価データを\n用意\n• データの流れを設計\n本講座 第 5 回\nモデル学習\n• モデルの選択・適応\n• うまくいかない原因の\n切り分け\n本講座 第 2 ・ 3 ・ 6 回\nデプロイ\n• 使える形で公開\n• システム構成・負荷対\n策\n本講座 第 7 回\n改善\n• 運用状況の監視\n• 自動テスト・反映\n• MLOps\n本講座 第 8 〜 10 回\n前回の例題　講義中の質問に答えるチャットボット。今日も、この例で考えます\n© Matsuo-Iwasawa Lab, The University of Tokyo 2",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p003"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p004",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "冒頭",
+            "title": "今日の 4 つの問い（各 15 分）",
+            "page": 4,
+            "content": "今日の構成\n今日の 4 つの問い（各 15 分）\n1\n なぜ答えが揺れ、間違えるのか？\n LLM は確率で次の言葉を選ぶ\n2\n モデルを賢くするには、どこを動かすのか？\n 困りごとに応じて「渡す・選ぶ／直す／考えさせる」\n3\n どんなモデルがあり、どう選ぶか？\n言語・画像・音声・時系列…の地図。決め手は自分の\n評価と「コスト＜効果」\n4\n 選んだモデルを、いつ・どう直すか？\nFine-Tuning は振る舞いに強く、知識は苦手。\n演習で試す\n© Matsuo-Iwasawa Lab, The University of Tokyo 4",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p003"
+            ]
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます。\n\n提供された資料を確認いたしましたが、今回作成したRAGシステムの「実測平均応答時間」や具体的な「正答率」の数値に関する記載は見つかりませんでした。そのため、現時点の資料から直接お答えすることはできません。\n\nなお、資料内ではRAGの仕組みや「同じ質問を複数回聞いてばらつきや正答率を測る重要性」（例として5回中3回正しいケースなど）についての説明はございます（資料名：『基盤モデルの仕組み』、PDF 13ページ）。\n\n実際の数値を確認されたい場合は、お手元の実験結果や評価スクリプトのログなどを再度ご確認ください。",
+      "seconds": 2.011,
+      "usage": {
+        "input_tokens": 6688,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 141,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 6688
+        },
+        "cost": "0.0023589",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 2.01 秒（検索・埋め込みを含む）\n[usage] 入力 6,688 tokens / 出力 141 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.002359 USD（埋め込み・索引構築分は含まない）\n"
+    },
+    {
+      "id": "adjacent-neighbors",
+      "error": "ModelHTTPError: status_code: 429, model_name: gemini-3.5-flash-lite, body: {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15, model: gemini-3.5-flash-lite, description: Generate conte"
+    },
+    {
+      "id": "adjacent-baseline",
+      "error": "ModelHTTPError: status_code: 429, model_name: gemini-3.5-flash-lite, body: {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15, model: gemini-3.5-flash-lite, description: Generate conte"
+    },
+    {
+      "id": "adjacent-neighbors",
+      "question": "LoRAとQLoRAの違いに加えて、その説明の直後のチャットボットのページで、形式だけ守らせるなら何が先か、FTが効く振る舞いの例は何かを説明してください。",
+      "query": "LoRA QLoRA 違い",
+      "seed_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061"
+      ],
+      "retrieved_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061",
+        "lec02-main-p053",
+        "lec02-main-p050",
+        "lec02-main-p059",
+        "lec02-main-p046",
+        "lec02-main-p048",
+        "lec02-main-p062"
+      ],
+      "page_count": 11,
+      "retrieval_seconds": 0.562,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": true,
+        "results": [
+          {
+            "page_id": "lec02-main-p052",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "LoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる",
+            "page": 52,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nLoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる\n元の重みは固定し、小さな「差分」だけを学習する（ LoRA ）。さらに元の重みを 4bit に圧縮する（ QLoRA ）\n出典： E. J. Hu et al. 「 LoRA 」（ ICLR 2022 ）／ T. Dettmers et al. 「 QLoRA 」（ NeurIPS 2023 ）。演習では transformers ・ peft ・ bitsandbytes ・ TRL を使用\nLoRA （ Hu et al. Fig.1 ）： A と B だけを学習する\n青：元の重み W\n固定して学習しない。 QLoRA では\n4bit （数値を粗く保存）にして\n約 1/4 。 7B なら約 4GB\n橙：小さな行列 A ・ B\nこれだけを学習。細長い 2 つの\n行列の積で、変化分を表す（低ランク）\nイメージ\n本体はそのままに、薄い「付箋」を\n書き足す。学習するのは全体の\n1% 未満にもできる\n650 億\nパラメータのモデルを\n48GB GPU 1 台\nで微調整（ QLoRA 論文）\n• Colab の GPU （例： 16GB ）でも、\n数十億パラメータ級なら調整できる。今日の\n演習はこれ\n• データの準備・評価・運用の手間は別にかかる\n© Matsuo-Iwasawa Lab, The University of Tokyo 52\n\n【図表・画像内の補足文字起こし】\nLoRA図：Pretrained Weights W ∈ R^(d×d)、x、h、A ~ N(0, σ²)、B = 0、d、r。",
+            "distance": 0.2205355018377304,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p051",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "PEFT ：モデル全体ではなく、一部だけを学習する",
+            "page": 51,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nPEFT ：モデル全体ではなく、一部だけを学習する\n全パラメータを更新する FT は重い。少数のパラメータだけを学習する方法（ PEFT ）が主流になった\n出典：各手法の原論文（ Houlsby+ 2019 ／ Li & Liang 2021 ／ Lester+ 2021 ／ Hu+ 2022 ）。 Hugging Face PEFT ライブラリで利用可能\nどこを学習するか（ Dettmers et al. Fig.1 ）\nFull Fine-Tuning\n全パラメータを更新。メモリも保存容量も大きい\nLoRA\n本体は固定し、小さな追加部分だけ更新\nQLoRA\nさらに本体を 4bit に圧縮して省メモリ\nPEFT の主な方法\nアダプタ\n層の間に小さな層を差し込み、そこだけ学習\nHoulsby et al. 2019\nプレフィックス／プロンプトチューニング\n入力の前に学習できる「仮想トークン」を付ける\nLi & Liang 2021 ／ Lester et al. 2021\nLoRA\n重みの変化を、細長い 2 つの小さな行列の積（低ランク）で表して学習\nHu et al. 2022 　← 現在最も広く使われる\nQLoRA\nLoRA ＋元の重みを 4bit に圧縮。さらに少ないメモリで\nDettmers et al. 2023 　← 次のスライド\n© Matsuo-Iwasawa Lab, The University of Tokyo 51\n\n【図表・画像内の補足文字起こし】\n比較図：Full Finetuning (No Adapters)／LoRA／QLoRA。Optimizer、Adapters、16-bit Transformer、4-bit Transformer。",
+            "distance": 0.2483736127614975,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p060",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "今日の演習： QLoRA で出力形式を矯正し、効果を測る",
+            "page": 60,
+            "content": "演習\n今日の演習： QLoRA で出力形式を矯正し、効果を測る\n事前宿題（ Colab ＋ FastAPI ＋ ngrok での API 化、温度による揺れの観察）の続きから\n準備\n事前宿題で詰まった点を\n解消する\n前を測る\n形式遵守率を測る（同じ\n温度で複数回）\nQLoRA で学習\n形式を守った手本で\n微調整する\n後を測る\nFT 後のモデルに\n差し替え、同じ質問で\n測る\n対照：知識の質問\n変わらないはず。\n変わったら評価を疑う\n形式遵守率＝ JSON として読み込め、決めた項目（ answer ・ slide ・ confidence ）がそろった回答の割合。「直った」は、前後で\n同じ評価をして初めて言える\n© Matsuo-Iwasawa Lab, The University of Tokyo 60",
+            "distance": 0.2852519452571869,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p047",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "根拠と諸説：知識の追加は RAG が効きやすい",
+            "page": 47,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n根拠と諸説：知識の追加は RAG が効きやすい\nただし「 FT で知識が全く入らない」わけではない。例外も知ったうえで、基本線として覚える\n出典： Ovadia+ EMNLP 2024 ／ Gekhman+ EMNLP 2024 ／ Biderman+ TMLR 2024 ／ Zhou+ (LIMA) NeurIPS 2023\n研究の報告（基本線）\nOvadia et al. （ 2024 ）\n知識を問う課題で、 RAG が「文書をそのまま学習させる FT 」を一貫して\n上回った\nGekhman et al. （ 2024 ）\n新しい知識を含む手本は覚えるのが遅く、覚えるほど誤り\n（ハルシネーション）が増える傾向\nBiderman et al. （ 2024 ）\nLoRA は全体を学習する FT より「学ぶ量が少なく、忘れる量も少ない」。\n小さな調整向き\n例外・諸説\n• 大量の文章で継続事前学習（ CPT ）すれば、\n言語・専門知識も入る（日本語の Swallow など）\n• 同じ事実を多様に言い換えて学習させると、\nFT でも知識が入りやすくなる\n• 振る舞いは、良質な手本 1,000 件程度でも\n大きく変わる（ LIMA ）\n• 大きいモデルの振る舞いを小さいモデルに移す\n（蒸留）ことで、速く安くする目的でも使われる\n© Matsuo-Iwasawa Lab, The University of Tokyo 47",
+            "distance": 0.3186967074871063,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p061",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "演習の進め方と提出物（仮）",
+            "page": 61,
+            "content": "演習\n演習の進め方と提出物（仮）\n時間は目安。前後で「同じ質問・同じ温度・同じ回数」で測ることが大事\n1 準備 10 分 事前宿題の不具合を直し、 API が動くことを確かめる\n2 FT 前を測る 10 分\n評価用 30 問 ×3 回で形式遵守率。普通の質問 10 問の\n答えも保存\n3 QLoRA で学習 20 分 手本 200 件で学習（ Colab の GPU で十数分）\n4 FT 後を測る 10 分 モデルを差し替え、 2 と同じ質問・温度・回数で測る\n5 対照：知識の質問 5 分\n手本に事実を入れていないので、変わらないはず。変わったら\n評価か学習の誤りを疑う\n提出物\n• 前後の比較表（形式遵守率・普通の\n質問の答え）\n• 直らなかった質問の例を 2 つ\n• 考察を 3 行：何が直り、何が直らず、\nなぜか\n評価用の 30 問は学習用と重ならないものを使う。差が小さいときは誤差の範囲かもしれないので、 3 回分のばらつきも書く\n© Matsuo-Iwasawa Lab, The University of Tokyo 61",
+            "distance": 0.3269001543521881,
+            "retrieval_role": "seed"
+          },
+          {
+            "page_id": "lec02-main-p053",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "チャットボットの場合：何を FT し、何を FT しないか",
+            "page": 53,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nチャットボットの場合：何を FT し、何を FT しないか\n今日の演習のテーマ。実務では、まずプロンプトや API の形式指定を試す\nFT で直す：出力の形式\n必ずこの形式（ JSON）で返してほしい\n{\n  \"answer\": \"RAGとは、資料を検索して… \",\n  \"slide\": 13,\n  \"confidence\": \"high\"\n}\nFT では直らない：知識\n「第 2 回の演習で使う GPU は何？」のように、資料にしかない\n事実は、 FT しても答えられるようにはなりにくい\n→ 検索して渡す（ RAG 、第 5 回）\n今回の手本には事実を入れていないので、知識が増えないのは当然。\nそれを測って確かめる\n演習で JSON を使うのは、効果を数えやすいから。実務で形だけ守らせるなら API の構造化出力が先。 FT が効くのは、\n口調・根拠の付け方など書式で縛れない振る舞い\n© Matsuo-Iwasawa Lab, The University of Tokyo 53",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p052"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p050",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "判断の順番：測る → 分ける → プロンプト → Fine-Tuning",
+            "page": 50,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n判断の順番：測る → 分ける → プロンプト → Fine-Tuning\n第 1 回の「モデル・手法の大別」の具体版。安く速く試せる方法から順に、評価で確かめながら進む\n1\n まず評価セットを作る\n 直ったかどうかを測るため（第 4 回）\n2\n 直したいのは知識？振る舞い？\n 知識 → 検索して渡す（ RAG 、第 5 回）\n3\n プロンプト（指示・例示）で直る？\n 直る → それで十分（第 9 回）\n4\n それでも直らない振る舞いがある\n → Fine-Tuning を検討\n© Matsuo-Iwasawa Lab, The University of Tokyo 50",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p051"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p059",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "第 2 回のまとめ： 4 つの芯と、明日やること",
+            "page": 59,
+            "content": "まとめ\n第 2 回のまとめ： 4 つの芯と、明日やること\n仕組みが分かると、次の一手が決まる\n芯（なぜ） 明日やること\n1\n LLM は確率で次の言葉を選ぶ\n 同じ質問を複数回＋答えられない質問で測ってから使う（ガイド 1 ）\n2\n 渡す・選ぶ／直す／考えさせる\n症状から打ち手を選ぶ。知識は渡す・選ぶ、答え方はまずプロンプト、難問は\n考えさせる（ガイド 2 ）\n3\n 地図を持ち、「コスト＜効果」で選ぶ\n 候補を 3 つ選び、自分の評価セットで精度・料金・待ち時間を比べる（ガイド 3 ）\n4\n FT は振る舞いに強く、知識は苦手\nチェックリストの 6 項目に✓が付いてから、 LoRA ／ QLoRA で小さく始める\n（ガイド 4 ）\n次の一歩　 PM 志望：自分の題材で評価用の質問を 20 問書く　エンジニア志望：演習の JSON を、 API の構造化出力とも比べる　\nML 専攻： Gekhman et al. 2024 ・ Biderman et al. 2024 を読む\n© Matsuo-Iwasawa Lab, The University of Tokyo 59",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p060"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p046",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "小規模な FT は振る舞いに強く、知識の追加は苦手",
+            "page": 46,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n小規模な FT は振る舞いに強く、知識の追加は苦手\nこの 15 分の芯\n「振る舞い」はプロンプトで直らなければ Fine-Tuning 、\n「知識」ならまず検索（ RAG ）\n振る舞い：出力形式・口調・手順の守り方。少量の手本で変わる\n知識：新しい事実・最新の資料。 FT で覚えさせるのは非効率で、誤りが増える報告も\nコスト：短いプロンプト・小さいモデルで同じ振る舞いを出せれば、速く安くなる\n© Matsuo-Iwasawa Lab, The University of Tokyo 46",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p047"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p048",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "継続事前学習（ CPT ）：知識・言語を足す追加学習",
+            "page": 48,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n継続事前学習（ CPT ）：知識・言語を足す追加学習\n質問と回答の手本ではなく、専門分野の文章そのもので「次のトークン予測」を続ける\n出典： Swallow （東京科学大学・産総研）／ AIRoA （ 2026 ）ほか。 S. Gururangan et al. 「 Don't Stop Pretraining 」（ ACL 2020 ）\nよくある学習の流れ\n事前学習済み\nモデル\n継続事前学習\n専門の文章で\nSFT\n指示に従わせる\nRL ・評価\n振る舞いを整える\n向いている場面\n• 専門分野の言葉・知識を広く身に\nつけさせたい（医療・法律・日本語など）\n• 大量の文章はあるが、質問と回答の\n手本はない\nかかるもの\n• 数十億〜数千億トークン規模の文章\n• 多数の GPU と、学習・評価の手間\n注意点\n• 元の能力を忘れる（一般の文章も混ぜる）\n• 後から指示に従わせる SFT が必要\n• 頻繁に変わる情報には向かない\n例： Swallow （ Llama などに日本語を継続事前学習）、 AIRoA （ロボット）。医療・法律などの分野適応にも\n© Matsuo-Iwasawa Lab, The University of Tokyo 48",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p047"
+            ]
+          },
+          {
+            "page_id": "lec02-main-p062",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "次回： AI エージェント。今日の性質が設計の前提になる",
+            "page": 62,
+            "content": "次回予告\n次回： AI エージェント。今日の性質が設計の前提になる\nエージェント＝今日のモデルに、道具・ループ・記憶を付けて「行動」させる仕組み（今日の 5 枚目の図の外側）\n今日わかったこと エージェントでは、こう効いてくる\n確率で選ぶ（答えが揺れる）\n 同じ依頼でも、毎回ちがう手順になる。 1 回の成功を信じず、複数回測る\nそれらしく誤る\n ない道具を呼ぶ・結果を読み違える。結果を確かめる仕組みと、止める条件が要る\n長い文脈を均等に使えない\n 作業が長くなると、前の指示や結果を見落とす。記憶の整理が要る\n形式を守らせる（今日の演習）\n 道具の呼び出しは JSON などの決まった形式。形式を守る力が土台になる\nコスト＜効果\n ループするほどトークンが増える。どこを AI に任せ、どこをプログラムで決めるか\n今日の最後に（ 1 分）　フォームに「一番わからなかったこと」と「明日やること 1 つ」を書く。次回の冒頭で取り上げる\n次回までに（仮）　演習の結果を提出。 ChatGPT などが検索するとき、何をしているか観察してくる\n© Matsuo-Iwasawa Lab, The University of Tokyo 62",
+            "retrieval_role": "neighbor",
+            "neighbor_of": [
+              "lec02-main-p061"
+            ]
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます。資料をもとに LoRA と QLoRA の違いや、チャットボットにおける調整方法についてヒントをお伝えします。\n\n**1. LoRA と QLoRA の違いについて**\n- **LoRA**：元の重みを固定し、細長い2つの小さな行列（差分）だけを学習することで、効率的にモデルを調整します（資料「LoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる」、p.52）。\n- **QLoRA**：LoRAの手法に加えて、元の重みを **4bit** に圧縮してさらに省メモリ化を図り、より少ないGPUリソースで大きなモデルの調整を可能にします（資料「PEFT ：モデル全体ではなく、一部だけを学習する」、p.51 および p.52）。\n\n**2. 形式だけ守らせる場合の優先順位と、FTが効く振る舞いの例について**\nLoRA / QLoRAの説明の直後（チャットボットのページ）を確認すると、以下のことが書かれています。\n- **形だけ守らせる場合の優先順位**：JSONなどの形式を指定したい場合、まずはファインチューニング（FT）ではなく、何を使うことが先とされているでしょうか（資料 p.53）。\n- **FT が効く振る舞いの例**：書式で縛れないような「口調」や「根拠の付け方」などが挙げられています（資料 p.53）。\n\nまずは「形だけを守らせたいとき、まずはどの機能や仕組みを試すべきか」という視点で、資料の該当箇所を確認してみてください！\n\n（参考資料：講義資料「基盤モデルの仕組み」 p.51, p.52, p.53）",
+      "seconds": 3.053,
+      "usage": {
+        "input_tokens": 4958,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 379,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 4958
+        },
+        "cost": "0.0024349",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 3.05 秒（検索・埋め込みを含む）\n[usage] 入力 4,958 tokens / 出力 379 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.002435 USD（埋め込み・索引構築分は含まない）\n"
+    },
+    {
+      "id": "adjacent-baseline",
+      "question": "LoRAとQLoRAの違いに加えて、その説明の直後のチャットボットのページで、形式だけ守らせるなら何が先か、FTが効く振る舞いの例は何かを説明してください。",
+      "query": "LoRA QLoRA 違い",
+      "seed_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061"
+      ],
+      "retrieved_ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061"
+      ],
+      "page_count": 5,
+      "retrieval_seconds": 0.544,
+      "retrieval_trace": {
+        "kind": "retrieval",
+        "include_neighbors": false,
+        "results": [
+          {
+            "page_id": "lec02-main-p052",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "LoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる",
+            "page": 52,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nLoRA と QLoRA ：大きなモデルも GPU 1 台で調整できる\n元の重みは固定し、小さな「差分」だけを学習する（ LoRA ）。さらに元の重みを 4bit に圧縮する（ QLoRA ）\n出典： E. J. Hu et al. 「 LoRA 」（ ICLR 2022 ）／ T. Dettmers et al. 「 QLoRA 」（ NeurIPS 2023 ）。演習では transformers ・ peft ・ bitsandbytes ・ TRL を使用\nLoRA （ Hu et al. Fig.1 ）： A と B だけを学習する\n青：元の重み W\n固定して学習しない。 QLoRA では\n4bit （数値を粗く保存）にして\n約 1/4 。 7B なら約 4GB\n橙：小さな行列 A ・ B\nこれだけを学習。細長い 2 つの\n行列の積で、変化分を表す（低ランク）\nイメージ\n本体はそのままに、薄い「付箋」を\n書き足す。学習するのは全体の\n1% 未満にもできる\n650 億\nパラメータのモデルを\n48GB GPU 1 台\nで微調整（ QLoRA 論文）\n• Colab の GPU （例： 16GB ）でも、\n数十億パラメータ級なら調整できる。今日の\n演習はこれ\n• データの準備・評価・運用の手間は別にかかる\n© Matsuo-Iwasawa Lab, The University of Tokyo 52\n\n【図表・画像内の補足文字起こし】\nLoRA図：Pretrained Weights W ∈ R^(d×d)、x、h、A ~ N(0, σ²)、B = 0、d、r。",
+            "distance": 0.2205355018377304
+          },
+          {
+            "page_id": "lec02-main-p051",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "PEFT ：モデル全体ではなく、一部だけを学習する",
+            "page": 51,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\nPEFT ：モデル全体ではなく、一部だけを学習する\n全パラメータを更新する FT は重い。少数のパラメータだけを学習する方法（ PEFT ）が主流になった\n出典：各手法の原論文（ Houlsby+ 2019 ／ Li & Liang 2021 ／ Lester+ 2021 ／ Hu+ 2022 ）。 Hugging Face PEFT ライブラリで利用可能\nどこを学習するか（ Dettmers et al. Fig.1 ）\nFull Fine-Tuning\n全パラメータを更新。メモリも保存容量も大きい\nLoRA\n本体は固定し、小さな追加部分だけ更新\nQLoRA\nさらに本体を 4bit に圧縮して省メモリ\nPEFT の主な方法\nアダプタ\n層の間に小さな層を差し込み、そこだけ学習\nHoulsby et al. 2019\nプレフィックス／プロンプトチューニング\n入力の前に学習できる「仮想トークン」を付ける\nLi & Liang 2021 ／ Lester et al. 2021\nLoRA\n重みの変化を、細長い 2 つの小さな行列の積（低ランク）で表して学習\nHu et al. 2022 　← 現在最も広く使われる\nQLoRA\nLoRA ＋元の重みを 4bit に圧縮。さらに少ないメモリで\nDettmers et al. 2023 　← 次のスライド\n© Matsuo-Iwasawa Lab, The University of Tokyo 51\n\n【図表・画像内の補足文字起こし】\n比較図：Full Finetuning (No Adapters)／LoRA／QLoRA。Optimizer、Adapters、16-bit Transformer、4-bit Transformer。",
+            "distance": 0.2483736127614975
+          },
+          {
+            "page_id": "lec02-main-p060",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "今日の演習： QLoRA で出力形式を矯正し、効果を測る",
+            "page": 60,
+            "content": "演習\n今日の演習： QLoRA で出力形式を矯正し、効果を測る\n事前宿題（ Colab ＋ FastAPI ＋ ngrok での API 化、温度による揺れの観察）の続きから\n準備\n事前宿題で詰まった点を\n解消する\n前を測る\n形式遵守率を測る（同じ\n温度で複数回）\nQLoRA で学習\n形式を守った手本で\n微調整する\n後を測る\nFT 後のモデルに\n差し替え、同じ質問で\n測る\n対照：知識の質問\n変わらないはず。\n変わったら評価を疑う\n形式遵守率＝ JSON として読み込め、決めた項目（ answer ・ slide ・ confidence ）がそろった回答の割合。「直った」は、前後で\n同じ評価をして初めて言える\n© Matsuo-Iwasawa Lab, The University of Tokyo 60",
+            "distance": 0.2852519452571869
+          },
+          {
+            "page_id": "lec02-main-p047",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "根拠と諸説：知識の追加は RAG が効きやすい",
+            "page": 47,
+            "content": "4/4 　選んだモデルを、いつ・どう直すか\n根拠と諸説：知識の追加は RAG が効きやすい\nただし「 FT で知識が全く入らない」わけではない。例外も知ったうえで、基本線として覚える\n出典： Ovadia+ EMNLP 2024 ／ Gekhman+ EMNLP 2024 ／ Biderman+ TMLR 2024 ／ Zhou+ (LIMA) NeurIPS 2023\n研究の報告（基本線）\nOvadia et al. （ 2024 ）\n知識を問う課題で、 RAG が「文書をそのまま学習させる FT 」を一貫して\n上回った\nGekhman et al. （ 2024 ）\n新しい知識を含む手本は覚えるのが遅く、覚えるほど誤り\n（ハルシネーション）が増える傾向\nBiderman et al. （ 2024 ）\nLoRA は全体を学習する FT より「学ぶ量が少なく、忘れる量も少ない」。\n小さな調整向き\n例外・諸説\n• 大量の文章で継続事前学習（ CPT ）すれば、\n言語・専門知識も入る（日本語の Swallow など）\n• 同じ事実を多様に言い換えて学習させると、\nFT でも知識が入りやすくなる\n• 振る舞いは、良質な手本 1,000 件程度でも\n大きく変わる（ LIMA ）\n• 大きいモデルの振る舞いを小さいモデルに移す\n（蒸留）ことで、速く安くする目的でも使われる\n© Matsuo-Iwasawa Lab, The University of Tokyo 47",
+            "distance": 0.3186967074871063
+          },
+          {
+            "page_id": "lec02-main-p061",
+            "document_id": "lec02-main",
+            "lecture": 2,
+            "document_title": "基盤モデルの仕組み",
+            "section": "選んだモデルを、いつ・どう直すか",
+            "title": "演習の進め方と提出物（仮）",
+            "page": 61,
+            "content": "演習\n演習の進め方と提出物（仮）\n時間は目安。前後で「同じ質問・同じ温度・同じ回数」で測ることが大事\n1 準備 10 分 事前宿題の不具合を直し、 API が動くことを確かめる\n2 FT 前を測る 10 分\n評価用 30 問 ×3 回で形式遵守率。普通の質問 10 問の\n答えも保存\n3 QLoRA で学習 20 分 手本 200 件で学習（ Colab の GPU で十数分）\n4 FT 後を測る 10 分 モデルを差し替え、 2 と同じ質問・温度・回数で測る\n5 対照：知識の質問 5 分\n手本に事実を入れていないので、変わらないはず。変わったら\n評価か学習の誤りを疑う\n提出物\n• 前後の比較表（形式遵守率・普通の\n質問の答え）\n• 直らなかった質問の例を 2 つ\n• 考察を 3 行：何が直り、何が直らず、\nなぜか\n評価用の 30 問は学習用と重ならないものを使う。差が小さいときは誤差の範囲かもしれないので、 3 回分のばらつきも書く\n© Matsuo-Iwasawa Lab, The University of Tokyo 61",
+            "distance": 0.3269001543521881
+          }
+        ]
+      },
+      "answer": "ご質問ありがとうございます。学習のサポートをさせていただきますね。\n\nご質問にある内容について、資料を基にそれぞれのポイントを確認していきましょう。\n\n### 1. LoRA と QLoRA の違いについて\n* **LoRA**: 元の重みを固定し、学習するのは小さな「差分」（細長い2つの行列の積）のみにすることで、効率的な調整を行います。（資料 lec02-main-p51, p52）\n* **QLoRA**: LoRAの手法に加えて、**元の重みを 4bit に圧縮**することで、さらに少ないメモリ（GPU 1台など）で大きなモデルを調整できるようにしたものです。（資料 lec02-main-p51, p52）\n\n---\n\n### 2. その説明の直後のチャットボットのページについて（形式遵守率とFT）\n資料の構成を確認すると、LoRA/QLoRAの解説（51〜52ページなど）の後に、出力形式の矯正や演習に関するページ（60〜61ページなど）が続いています。そちらを参照して考えてみましょう。\n\n* **形式だけ守らせるなら何が先か（知識の追加と出力形式の調整の順番）**\n  * 資料の47ページや60ページを確認してみましょう。新しい「知識」をモデルに追加する場合と、出力の「形式（振る舞い）」を直す場合では、どちらがアプローチとして効果的とされているでしょうか？知識の追加にはRAGなどが効果的とされる一方で、形式や振る舞いを直すためのヒントが記載されています。\n* **FT（ファインチューニング）が効く振る舞いの例**\n  * 資料47ページの下部（例外・諸説の部分など）に、良質な手本を使うことで大きく変わる「モデルの振る舞い」についての記載があります。どのようなデータや件数で、どのような変化が起きるとされているか探してみましょう。\n\n宿題や演習を進める際は、「知識を覚えさせること」と「出力形式や振る舞いを整えること」の違いに注目すると、考え方のヒントが見えてきますよ！\n\n**参考資料:**\n* 資料ID: `lec02-main`\n  * LoRAとQLoRAの説明: 51〜52ページ\n  * 知識とFT・振る舞いに関する記述: 47ページ\n  * 演習・形式遵守に関する記述: 60〜61ページ",
+      "seconds": 3.593,
+      "usage": {
+        "input_tokens": 2535,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
+        "output_tokens": 536,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "text_prompt_tokens": 2535
+        },
+        "cost": "0.0021005",
+        "requests": 1,
+        "tool_calls": 0
+      },
+      "trace": [],
+      "trace_text": "\n--- trace ---\n[time] 回答完了まで 3.59 秒（検索・埋め込みを含む）\n[usage] 入力 2,535 tokens / 出力 536 tokens / モデル応答 1 回\n[cost] 生成APIの推定コスト: $0.002100 USD（埋め込み・索引構築分は含まない）\n"
+    }
+  ]
+}

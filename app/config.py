@@ -19,6 +19,8 @@ RAG_GRAPH = ROOT / "data/rag_data/graph.json"
 RAG_DB = Path(os.getenv("AIE_RAG_DB", str(ROOT / "data/rag_data/index.sqlite3")))
 RAG_DOCUMENT_IDS = ("lec01-main", "lec02-main", "lec03-main")
 RAG_TOP_K = 5
+# 実装課題: ベクトル検索のヒットに同一資料の前後1ページを追加する。
+RAG_INCLUDE_NEIGHBORS = os.getenv("AIE_RAG_NEIGHBORS", "0") == "1"
 GRAPH_START_K = 3
 GRAPH_HOPS = 2
 GRAPH_MAX_RESULTS = 10

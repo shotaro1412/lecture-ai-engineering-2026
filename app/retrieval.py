@@ -16,7 +16,7 @@ import sqlite_vec
 
 from app.config import (
     EMBEDDING_DIMENSIONS, EMBEDDING_MAX_TOKENS, EMBEDDING_MODEL,
-    RAG_DB, RAG_DOCUMENT_IDS, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
+    RAG_DB, RAG_DOCUMENT_IDS, RAG_SOURCE, RAG_TOP_K, RAG_TREE, RAG_INCLUDE_NEIGHBORS, get_api_key,
     RAG_GRAPH, GRAPH_START_K, GRAPH_HOPS, GRAPH_MAX_RESULTS,
 )
 
@@ -124,8 +124,40 @@ def open_index(path: Path):
         db.close()
 
 
-def search(query: str) -> list[dict]:
-    """質問を埋め込み、近いページを最大RAG_TOP_K件返す。"""
+def expand_neighbors(hits: list[dict], pages: list[dict]) -> list[dict]:
+    """検索ヒットを先頭に保ち、同一資料の前後1ページを重複なく追加する。
+
+    隣接はPDFページ番号±1で判断し、別資料や欠けたページを飛び越えない。
+    distanceは元の検索ヒットだけに残す。追加ページに類似度を偽って付けない。
+    """
+    available = {(p["document_id"], p["page"]): p for p in pages}
+    results, by_key = [], {}
+    for hit in hits:
+        key = (hit["document_id"], hit["page"])
+        if key not in available or key in by_key:
+            continue
+        result = {**hit, "retrieval_role": "seed"}
+        results.append(result)
+        by_key[key] = result
+    for hit in hits:
+        if (hit["document_id"], hit["page"]) not in available:
+            continue
+        for offset in (-1, 1):
+            key = (hit["document_id"], hit["page"] + offset)
+            if key not in available:
+                continue
+            if key not in by_key:
+                result = {**available[key], "retrieval_role": "neighbor", "neighbor_of": []}
+                results.append(result)
+                by_key[key] = result
+            result = by_key[key]
+            if result["retrieval_role"] == "neighbor" and hit["page_id"] not in result["neighbor_of"]:
+                result["neighbor_of"].append(hit["page_id"])
+    return results
+
+
+def search(query: str, *, include_neighbors: bool | None = None) -> list[dict]:
+    """上位RAG_TOP_K件を取得。設定に応じ同一資料の前後1ページも加える。"""
     if not isinstance(query, str) or not query.strip():
         raise ValueError("検索語が空です。")
     with open_index(RAG_DB) as db:
@@ -135,7 +167,9 @@ def search(query: str) -> list[dict]:
                    vec_distance_cosine(embedding, ?) AS distance
             FROM chunks ORDER BY distance, page_id LIMIT ?
         """, (sqlite_vec.serialize_float32(vector), RAG_TOP_K))
-        return [dict(row) for row in rows]
+        hits = [dict(row) for row in rows]
+    enabled = RAG_INCLUDE_NEIGHBORS if include_neighbors is None else include_neighbors
+    return expand_neighbors(hits, load_pages(RAG_SOURCE)) if enabled else hits
 
 
 def search_graph(query: str) -> dict:
@@ -151,7 +185,7 @@ def search_graph(query: str) -> dict:
             adjacent[a].add(b)
             adjacent[b].add(a)
 
-    seeds = [hit for hit in search(query) if hit["page_id"] in pages][:min(GRAPH_START_K, GRAPH_MAX_RESULTS)]
+    seeds = [hit for hit in search(query, include_neighbors=False) if hit["page_id"] in pages][:min(GRAPH_START_K, GRAPH_MAX_RESULTS)]
     seed_ids = {seed["page_id"] for seed in seeds}
     results, candidates = [], {}
     for rank, seed in enumerate(seeds):

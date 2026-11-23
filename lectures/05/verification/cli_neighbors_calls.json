@@ -1,0 +1,34 @@
+{
+  "AIE_RAG_NEIGHBORS": true,
+  "calls": [
+    {
+      "query": "LoRA 固定 学習 QLoRA 加える",
+      "ids": [
+        "lec02-main-p052",
+        "lec02-main-p051",
+        "lec02-main-p060",
+        "lec02-main-p047",
+        "lec02-main-p061",
+        "lec02-main-p053",
+        "lec02-main-p050",
+        "lec02-main-p059",
+        "lec02-main-p046",
+        "lec02-main-p048",
+        "lec02-main-p062"
+      ],
+      "roles": [
+        "seed",
+        "seed",
+        "seed",
+        "seed",
+        "seed",
+        "neighbor",
+        "neighbor",
+        "neighbor",
+        "neighbor",
+        "neighbor",
+        "neighbor"
+      ]
+    }
+  ]
+}

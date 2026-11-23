@@ -1,0 +1,26 @@
+{
+  "base_commit": "1ce722c",
+  "dependencies": {
+    "pydantic-ai-slim": "2.57.0",
+    "google-genai": "2.31.0",
+    "sqlite-vec": "0.1.9",
+    "pytest": "9.1.1"
+  },
+  "source_pages": {
+    "all": 438,
+    "retrieval": 214
+  },
+  "source_index_content_match": 214,
+  "completed_runs": {
+    "exercise": 4,
+    "controlled_homework": 8,
+    "cli": 1
+  },
+  "hashes": {
+    "data/rag_data/lectures.json": "f6022c177ec1b5575b56d21307a5ae2aa09c586047398a17e1e4b86a56e99dce",
+    "data/rag_data/index.sqlite3": "600d7a3633d84c21b6b26d511f9cd701d7dbee32bfe8eab0fd6fee3affb0f69e",
+    "app/retrieval.py": "fe7fd070d30a8360b58017e0fbf0012878ca968d60ac48d0ebfe159eea42ef8a",
+    "app/config.py": "b609bf512a238b68f4156ab0c27c9f0f1163a4f7ec5ea8cae77c497aea4abe26",
+    "scripts/compare_rag_neighbors.py": "eaa362a00ac84d593a98ea462b52ac9b2531151f08b589a2b33eb81f5d2af51b"
+  }
+}
